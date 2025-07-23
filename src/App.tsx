@@ -1,5 +1,11 @@
+import AppRoutes from "./Routes/AppRoutes";
+
 const App = () => {
-  return <div className="text-red-500">App</div>;
+  return (
+    <div>
+      <AppRoutes />
+    </div>
+  );
 };
 
 export default App;
