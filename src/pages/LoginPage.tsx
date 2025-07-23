@@ -1,4 +1,4 @@
-import React, { useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import schoollogo from "../assets/images/schoollogo.png";
 import Input from "../components/CustomInput";
