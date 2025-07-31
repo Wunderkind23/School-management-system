@@ -2,6 +2,9 @@ import { useState, type FormEvent } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import schoollogo from "../assets/images/schoollogo.png";
 import Input from "../components/CustomInput";
+import OtpModal from "../components/Login-Component/OtpModal";
+import ForgotPasswordModal from "../components/Login-Component/ForgotPasswordModal";
+import ResetPasswordModal from "../components/Login-Component/ResetPasswordModal";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,16 +14,35 @@ const LoginPage = () => {
   });
 
   const [showPassword, setShowPassword] = useState(false);
+  const [showForgotModal, setShowForgotModal] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [showOtpModal, setShowOtpModal] = useState(false);
+  const [showResetPasswordModal, setShowResetPasswordModal] = useState(false);
+
+  // const navigate = useNavigate();
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     console.log("Form Data:", formData);
-    // You can add API call here
+    // Add API logic here
+  };
+  const handleContinue = () => {
+    // if (!forgotEmail.trim()) {
+    //   alert("Please enter a valid email.");
+    //   return;
+    // }
+
+    // // Navigate to OTP screen and pass email as route state
+    // navigate("/otp", { state: { forgotEmail } });
+
+    // do validation, API call, etc.
+    setShowOtpModal(true); // 👈 this displays the OTP modal
+    setShowForgotModal(false); // optionally hide forgot modal
   };
 
   return (
-    <div className="w-full h-screen flex justify-center items-center bg-gray-50">
-      <div className="w-[60%] h-[400px] mx-auto border flex items-center shadow-md rounded-md bg-white">
+    <div className="w-full h-screen flex justify-center items-center bg-gray-50 relative">
+      <div className="w-[60%] h-[400px] mx-auto border flex items-center shadow-md rounded-md bg-white z-10">
         {/* Logo Section */}
         <div className="border-r h-full w-1/2 flex items-center justify-center">
           <img src={schoollogo} className="w-[70%]" alt="School Logo" />
@@ -45,7 +67,6 @@ const LoginPage = () => {
               <span>Teacher</span>
             </label>
 
-            {/* Divider */}
             <div className="w-px bg-black self-stretch"></div>
 
             <label className="w-[45%] hover:bg-purple-500 hover:text-white flex justify-center gap-2 items-center p-1 rounded-lg cursor-pointer">
@@ -74,7 +95,7 @@ const LoginPage = () => {
             className="mt-6"
           />
 
-          {/* Password Input with Toggle */}
+          {/* Password Input */}
           <div className="relative mt-6">
             <Input
               type={showPassword ? "text" : "password"}
@@ -94,7 +115,10 @@ const LoginPage = () => {
           </div>
 
           {/* Forgot Password */}
-          <span className="text-sm text-blue-500 block mt-2 cursor-pointer hover:underline">
+          <span
+            onClick={() => setShowForgotModal(true)}
+            className="text-sm text-blue-500 block mt-2 cursor-pointer hover:underline"
+          >
             Forgot password?
           </span>
 
@@ -109,6 +133,37 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+
+      {/* ✅ Modal placed here at the bottom of the return */}
+      {showForgotModal && (
+        <ForgotPasswordModal
+          showForgotModal={showForgotModal}
+          forgotEmail={forgotEmail}
+          handleContinue={handleContinue}
+          setForgotEmail={setForgotEmail}
+        />
+      )}
+      {/* OTP Modal */}
+      {showOtpModal && (
+        <OtpModal
+          forgotEmail={forgotEmail}
+          onsuccess={() => {
+            setShowOtpModal(false);
+            setShowResetPasswordModal(true);
+          }}
+        />
+      )}
+
+      {/* New Password */}
+      {showResetPasswordModal && (
+        <ResetPasswordModal
+          forgotEmail={forgotEmail}
+          onsuccess={() => {
+            setShowResetPasswordModal(false);
+            // Optionally reset form, show toast, navigate, etc.
+          }}
+        />
+      )}
     </div>
   );
 };
