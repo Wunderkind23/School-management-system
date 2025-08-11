@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 type MenuItem = {
   name: string;
   link: string;
-  icon: JSX.Element;
+  icon: React.ReactNode; // Preferred approach
 };
 
 const menu: MenuItem[] = [
