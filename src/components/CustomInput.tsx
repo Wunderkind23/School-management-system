@@ -44,7 +44,7 @@ const Input: React.FC<InputProps> = ({
           placeholder={placeholder}
           value={value}
           onChange={onChange}
-          className={`border rounded-md px-4 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-purple-500 ${className}`}
+          className={`border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500 ${className}`}
           required
           {...rest}
         />
