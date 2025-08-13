@@ -92,7 +92,7 @@ const LoginPage = () => {
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
             }
-            className="mt-6"
+            className="mt-6 w-full"
           />
 
           {/* Password Input */}
@@ -105,6 +105,7 @@ const LoginPage = () => {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
+              className="w-full"
             />
             <div
               className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
