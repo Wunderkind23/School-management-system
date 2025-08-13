@@ -4,10 +4,11 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
+
   "compilerOptions": {
-    "jsx": "react-jsx", // For React 17+ (or "react" for older versions)
-    "types": ["react", "react-dom", "jest"], // Include React types
-    "esModuleInterop": true,
-    "moduleResolution": "node"
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   }
 }
