@@ -1,28 +1,43 @@
-import { Link } from "react-router-dom";
-
-type Staff = {
-  studentName: string;
-  gender: string;
-  // email: string;
-  // lastLogin: string;
-};
-
-const studentList: Staff[] = [
-  {
-    studentName: "Mr Johnson",
-    gender: "Male",
-    // email: "john@mail.com",
-    // lastLogin: "1 day ago",
-  },
-  // {
-  //   userName: "Mr Johnson",
-  //   role: "Teacher",
-  //   email: "john@mail.com",
-  //   lastLogin: "1 day ago",
-  // },
-];
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import useAuth from '@/contexts/AuthContext'
+import { useDeleteStudent } from '@/hooks/student-management/useDeleteStudent'
+import { usePromoteStudent } from '@/hooks/student-management/usePromoteStudent'
+import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { Link } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 const StudentMgt = () => {
+  const { token } = useAuth()
+  const { data, refetch } = useFetchStudent(token)
+  const { mutate } = usePromoteStudent(token)
+  const { mutate: mutateStudent } = useDeleteStudent(token)
+
+  const handleDeleteStudent = (id: number) => {
+    mutateStudent(id, {
+      onSuccess: () => {
+        toast.success('Student Deleted Successfully')
+        refetch()
+      },
+      onError: (error: any) => {
+        const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
+        toast.error(message)
+      },
+    })
+  }
+
+  const handlePromoteStudent = (id: number) => {
+    mutate(id, {
+      onSuccess: () => {
+        toast.success('Student Promoted Successfully')
+      },
+      onError: (error: any) => {
+        const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
+        toast.error(message)
+      },
+    })
+  }
+
   return (
     <div className="p-4 bg-pink-50 min-h-screen">
       {/* Top Bar */}
@@ -69,20 +84,54 @@ const StudentMgt = () => {
             </tr>
           </thead>
           <tbody>
-            {studentList.map((staff, index) => (
-              <tr key={index} className="border-b border-gray-100">
-                <td className="px-4 py-2">{staff.studentName}</td>
-                <td className="px-4 py-2">{staff.gender}</td>
-                {/* <td className="px-4 py-2">{staff.email}</td> */}
-                {/* <td className="px-4 py-2">{staff.lastLogin}</td> */}
-                <td className="px-4 py-2">⋯</td>
+            {data?.result?.map((student, index) => (
+              <tr
+                key={index}
+                className={`${student ? 'bg-white' : 'bg-red-100'}`}
+                // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
+              >
+                <td className="px-4 py-2">
+                  {student.surname} {student.firstName}
+                </td>
+                <td className="px-4 py-2">{student.gender}</td>
+                {/* <td className="px-4 py-2">{student.email}</td> */}
+                {/* <td className="px-4 py-2">{student.employeeNumber}</td> */}
+                <td className="px-4 py-2">
+                  <Popover>
+                    <PopoverTrigger>⋯</PopoverTrigger>
+                    <PopoverContent className="bg-red">
+                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                        <button
+                          onClick={() => {
+                            handlePromoteStudent(student.id)
+                          }}
+                          className="py-1 px-2 font-bold text-white  rounded-sm bg-green-600  text-[7px]"
+                        >
+                          Promote
+                        </button>
+                        <button
+                          onClick={() => {
+                            handleDeleteStudent(student.id)
+                          }}
+                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
+                        >
+                          Delete
+                        </button>
+                        {/* // TODO: ASSIGN ROLE TO BE FIXED */}
+                        {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
+                          Assign Role
+                        </button> */}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StudentMgt;
+export default StudentMgt

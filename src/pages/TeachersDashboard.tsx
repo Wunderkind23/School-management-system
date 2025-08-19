@@ -1,7 +1,5 @@
-import { Outlet } from "react-router-dom";
-// import DashboardLayout from "../components/Admin-Dashboard-Component/DashboardLayout";
-import SidebarSection from "../components/Teachers-Dashboard-Component/SidebarSection";
-// import TdashboardLayout from "../components/Teachers-Dashboard-Component/TdashboardLayout";
+import { Outlet } from 'react-router-dom'
+import SidebarSection from '../components/Teachers-Dashboard-Component/SidebarSection'
 
 const TeachersDashboard = () => {
   return (
@@ -9,10 +7,9 @@ const TeachersDashboard = () => {
       <SidebarSection />
       <div className="w-full h-screen overflow-y-scroll">
         <Outlet />
-        {/* <TdashboardLayout /> */}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TeachersDashboard;
+export default TeachersDashboard
