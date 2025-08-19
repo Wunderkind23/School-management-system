@@ -13,15 +13,32 @@ import TeachersDashboard from "../pages/TeachersDashboard";
 import TdashboardLayout from "../components/Teachers-Dashboard-Component/TdashboardLayout";
 import ResultEntry from "../components/Teachers-Dashboard-Component/ResultEntry";
 import Result from "../components/Teachers-Dashboard-Component/Result";
+import StudentDashboard from "../pages/StudentDashboard";
+import SdashboardLayout from "../components/Student-Dashboard-Component/SdashboardLayout";
+import OnboardingPage from "../pages/OnboardingPage";
+import FirstPhase2 from "../components/OnboardingComponent/FirstPhase2";
+import SecondPhase1 from "../components/OnboardingComponent/SecondPhase1";
+import SecondPhase2 from "../components/OnboardingComponent/SecondPhase2";
+import SecondPhase3 from "../components/OnboardingComponent/SecondPhase3";
+import SecondPhase4 from "../components/OnboardingComponent/SecondPhase4";
+
 // import OtpModal from "../components/Login-Component/OtpModal";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/firstpage" element={<OnboardingPage />} />
+      <Route path="/firstphase2" element={<FirstPhase2 />} />
+      <Route path="/secondphase1" element={<SecondPhase1 />} />
+      <Route path="/secondphase2" element={<SecondPhase2 />} />
+      <Route path="/secondphase3" element={<SecondPhase3 />} />
+      <Route path="/secondphase4" element={<SecondPhase4 />} />
+
       <Route element={<Layout />}>
         {/* <Route path="hmme" element={<Home />} /> */}
       </Route>
-      <Route path="/" element={<LoginPage />} />
+
+      <Route path="/login" element={<LoginPage />} />
       {/* <Route path="/otp" element={<OtpModal />} /> */}
       <Route path="/admin" element={<AdminDashboard />}>
         <Route path="/admin/dashboard-layout" element={<DashboardLayout />} />
@@ -39,6 +56,12 @@ const AppRoutes = () => {
         />
         <Route path="/Tadmin/result-entry" element={<ResultEntry />} />
         <Route path="/Tadmin/results" element={<Result />} />
+      </Route>
+      <Route path="/Sadmin" element={<StudentDashboard />}>
+        <Route
+          path="/Sadmin/Sdashboard-layout"
+          element={<SdashboardLayout />}
+        />
       </Route>
     </Routes>
   );
