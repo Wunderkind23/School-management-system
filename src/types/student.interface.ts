@@ -19,7 +19,7 @@ export interface StudentAttributeI {
   password?: string
 }
 
-interface StudentResponse {
+export interface StudentResponse {
   id: number
   surname: string
   firstName: string

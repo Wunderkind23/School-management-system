@@ -1,11 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import useAuth from '@/contexts/AuthContext'
+import { useDeleteStudentSubjectScore } from '@/hooks/student-management/useDeleteStudentScore'
 import { useFetchStudentScore } from '@/hooks/student-management/useFetchStudentScore'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { FiLogOut } from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
 const Result = () => {
   const { token } = useAuth()
-  const { data } = useFetchStudentScore(token)
+  const { data, refetch } = useFetchStudentScore(token)
+  const { mutate } = useDeleteStudentSubjectScore(token)
+
+  const handleDelete = (id: number) => {
+    mutate(id, {
+      onSuccess: () => {
+        toast.success('Student score deleted successfully.')
+        refetch()
+      },
+      onError: (error: any) => {
+        // If API sends a custom error message
+        console.log(error)
+        const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
+        toast.error(message)
+      },
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans w-full">
       {/* Top Bar */}
@@ -54,7 +74,7 @@ const Result = () => {
             </tr>
           </thead>
           <tbody>
-            {data?.result.map((student, index) => (
+            {data?.result?.map((student, index) => (
               <tr key={index} className="border-b border-gray-100">
                 <td className="px-4 py-2">
                   {student?.student?.firstName} {student?.student?.surname}
@@ -69,12 +89,17 @@ const Result = () => {
                     <PopoverTrigger>⋯</PopoverTrigger>
                     <PopoverContent className="bg-red">
                       <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
-                        <button className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px]">
+                        <button
+                          onClick={() => {
+                            handleDelete(student.id)
+                          }}
+                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px]"
+                        >
                           Delete
                         </button>
                         <button
                           onClick={() => {
-                            // handleDeactivateStaff(staff.id)
+                            // handleDeactivateStaff(staff.
                           }}
                           className="py-1 px-2 font-bold text-white border rounded-sm bg-green-600 text-[7px] "
                         >

@@ -25,3 +25,60 @@ export interface GradeAttributeI {
   createdAt: string // ISO 8601 date string
   updatedAt: string // ISO 8601 date string
 }
+
+export interface ClassSubject {
+  subjectId: number
+  termId: number
+  classId: number
+}
+
+export interface ClassSubjectApiResponse {
+  id: number
+  classId: number
+  termId: number
+  subjectId: number
+  createdAt: string // ISO 8601 date string
+  updatedAt: string // ISO 8601 date string
+}
+
+interface Term {
+  id: number
+  academicSessionId: number
+  name: string
+  isActive: boolean
+  startDate: string // ISO 8601
+  endDate: string // ISO 8601
+  createdAt: string // ISO 8601
+  updatedAt: string // ISO 8601
+}
+
+interface Class {
+  id: number
+  name: string
+  level: string
+  createdAt: string // ISO 8601
+  updatedAt: string // ISO 8601
+}
+
+interface Subject {
+  id: number
+  name: string
+  createdAt: string // ISO 8601
+  updatedAt: string // ISO 8601
+}
+
+export interface ClassSubjectItem {
+  id: number
+  classId: number
+  termId: number
+  subjectId: number
+  createdAt: string // ISO 8601
+  updatedAt: string // ISO 8601
+  term: Term
+  class: Class
+  subject: Subject
+}
+
+export interface ClassSubjectResponse {
+  data: ClassSubjectItem[]
+}

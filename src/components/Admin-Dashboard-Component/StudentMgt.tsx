@@ -4,6 +4,7 @@ import { useDeleteStudent } from '@/hooks/student-management/useDeleteStudent'
 import { usePromoteStudent } from '@/hooks/student-management/usePromoteStudent'
 import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { FiLoader } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
@@ -11,7 +12,7 @@ const StudentMgt = () => {
   const { token } = useAuth()
   const { data, refetch } = useFetchStudent(token)
   const { mutate } = usePromoteStudent(token)
-  const { mutate: mutateStudent } = useDeleteStudent(token)
+  const { mutate: mutateStudent, isPending } = useDeleteStudent(token)
 
   const handleDeleteStudent = (id: number) => {
     mutateStudent(id, {
@@ -57,7 +58,7 @@ const StudentMgt = () => {
             className="w-8 h-8 rounded-full"
           />
           <button className="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700 text-sm">
-            Logour
+            Logout
           </button>
         </div>
       </div>
@@ -115,7 +116,7 @@ const StudentMgt = () => {
                           }}
                           className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
                         >
-                          Delete
+                          {isPending ? <FiLoader /> : 'Delete'}
                         </button>
                         {/* // TODO: ASSIGN ROLE TO BE FIXED */}
                         {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">

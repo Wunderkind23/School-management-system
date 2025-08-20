@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiLogOut } from 'react-icons/fi'
+import { FiLoader, FiLogOut } from 'react-icons/fi'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
-import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
 import useAuth from '@/contexts/AuthContext'
 import { useState } from 'react'
 import { useFetchSubject } from '@/hooks/global/userFetchSubject'
@@ -13,6 +12,7 @@ import z from 'zod'
 import { toast } from 'react-toastify'
 import { useAddStudentScore } from '@/hooks/student-management/useAddStudentScore'
 import { StudentScoreAttributeI } from '@/types/student.interface'
+import { useFetchStudentByStaff } from '@/hooks/student-management/userFetchStudentByStaff'
 
 const defaults = {
   subjectId: '',
@@ -51,12 +51,12 @@ const formSchema = z
 
 const ResultEntry = () => {
   const { token } = useAuth()
-  const { data } = useFetchStudent(token)
+  const { data } = useFetchStudentByStaff(token)
   const { data: classData } = useFetchClass(token)
   const { data: subjectData } = useFetchSubject(token)
   const { data: termData } = useFetchTerm(token)
   const { data: gradesData } = useFetchGrade(token)
-  const { mutate } = useAddStudentScore(token)
+  const { mutate, isPending } = useAddStudentScore(token)
   const [formData, setFormData] = useState(defaults)
 
   // Handle text/select changes
@@ -167,7 +167,7 @@ const ResultEntry = () => {
             className="w-[50%] border shadow h-[40px] border-gray-300 rounded-lg px-3 py-2 text-sm"
           >
             <option value="">Select Student</option>
-            {data?.result.map((student) => {
+            {data?.map((student) => {
               return (
                 <option typeof="number" key={student.id} value={student.id}>
                   {student.firstName} {student.surname}
@@ -267,11 +267,12 @@ const ResultEntry = () => {
         </div>
 
         <button
+          disabled={isPending}
           onClick={handleSubmit}
           type="submit"
           className=" block mx-auto mt-6 py-2 px-4 rounded-lg bg-purple-500 hover:bg-purple-800 hover:text-white"
         >
-          Enter Result
+          {isPending ? <FiLoader /> : '   Enter Result'}
         </button>
       </form>
     </div>

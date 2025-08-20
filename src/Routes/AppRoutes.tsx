@@ -22,13 +22,13 @@ import SecondPhase2 from '../components/OnboardingComponent/SecondPhase2'
 import SecondPhase3 from '../components/OnboardingComponent/SecondPhase3'
 import SecondPhase4 from '../components/OnboardingComponent/SecondPhase4'
 import ProtectedRoute from '@/components/ProtectedRoute'
+import ClassSubject from '@/components/Teachers-Dashboard-Component/ClassSubject'
 
 // import OtpModal from "../components/Login-Component/OtpModal";
 
 const AppRoutes = () => {
   return (
     <Routes>
-
       <Route path="/firstpage" element={<OnboardingPage />} />
       <Route path="/firstphase2" element={<FirstPhase2 />} />
       <Route path="/secondphase1" element={<SecondPhase1 />} />
@@ -70,9 +70,9 @@ const AppRoutes = () => {
         <Route path="/Tadmin/Tdashboard-layout" element={<TdashboardLayout />} />
         <Route path="/Tadmin/result-entry" element={<ResultEntry />} />
         <Route path="/Tadmin/results" element={<Result />} />
+        <Route path="/Tadmin/class-subject" element={<ClassSubject />} />
       </Route>
 
-      
       <Route path="/Sadmin" element={<StudentDashboard />}>
         <Route path="/Sadmin/Sdashboard-layout" element={<SdashboardLayout />} />
       </Route>

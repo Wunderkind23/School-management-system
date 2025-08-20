@@ -39,7 +39,7 @@ const TdashboardLayout = () => {
         />
         <StatCard
           title="Pending Results"
-          value="6"
+          value="0"
           img={<img src={Pending} alt="Classes" className="w-12 h-12" />}
         />
       </div>

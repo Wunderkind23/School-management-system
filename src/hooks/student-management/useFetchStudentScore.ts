@@ -22,7 +22,7 @@ const getData = async (token: string): Promise<StudentScoreResponseAttributeI> =
 
 const studentScoreOptions = (token: string) => {
   return queryOptions({
-    queryKey: ['studentKey', token],
+    queryKey: ['studentScoreKey', token],
     queryFn: () => getData(token),
   })
 }
