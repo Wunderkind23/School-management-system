@@ -42,3 +42,31 @@ export interface StudentApiResponseAttributeI {
   result: StudentResponse[]
   totalCount: number
 }
+
+export interface StudentScoreAttributeI {
+  subjectId: number
+  studentId: number
+  termId: number
+  contAssessment: number
+  examScore: number
+  grade: string
+  total: number
+}
+
+interface StudentScoreResponse {
+  id: number
+  subjectId: number
+  studentId: number
+  termId: number
+  classId: number
+  contAssessment: number
+  examScore: number
+  grade: string
+  total: number
+  student: StudentResponse
+}
+
+export interface StudentScoreResponseAttributeI {
+  result: StudentScoreResponse[]
+  totalCount: number
+}

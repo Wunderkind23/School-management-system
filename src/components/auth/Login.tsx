@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai'
 import Input from '../CustomInput'
 import ForgotPasswordModal from '../Login-Component/ForgotPasswordModal'
@@ -12,8 +12,12 @@ import useAuth from '@/contexts/AuthContext'
 
 const Login = () => {
   const { mutate, isPending } = useLogin()
-  const { user } = useAuth()
+  const { logout, login } = useAuth()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    logout()
+  }, [])
 
   const [formData, setFormData] = useState({
     email: '',
@@ -33,14 +37,16 @@ const Login = () => {
     mutate(
       { ...formData },
       {
-        onSuccess: () => {
+        onSuccess: (res) => {
           toast.success('Login successful.')
 
-          if (user.role === 'admin') {
+          login(res.data.accessToken, res.data.user)
+
+          if (res?.data.user.role === 'admin') {
             navigate('/admin/dashboard-layout')
           }
 
-          if (user.role === 'teacher') {
+          if (res?.data.user.role === 'teacher') {
             navigate('/Tadmin/Tdashboard-layout')
           }
         },

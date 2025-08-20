@@ -1,10 +1,10 @@
 import axios from 'axios'
 import { useQuery, queryOptions } from '@tanstack/react-query'
 import { END_POINT } from '@/config/environment'
-import { ClassAttributeI } from '@/types'
+import { GradeAttributeI } from '@/types'
 
-const getData = async (token: string): Promise<ClassAttributeI[]> => {
-  const url = `${END_POINT.BASE_URL}/class`
+const getData = async (token: string): Promise<GradeAttributeI[]> => {
+  const url = `${END_POINT.BASE_URL}/grade-system`
 
   const config = {
     headers: {
@@ -14,18 +14,18 @@ const getData = async (token: string): Promise<ClassAttributeI[]> => {
   }
 
   const res = await axios.get(url, config)
-  const data: ClassAttributeI[] = res.data.data
+  const data: GradeAttributeI[] = res.data.data
 
   return data
 }
 
-const classOptions = (token: string) => {
+const gradeOptions = (token: string) => {
   return queryOptions({
-    queryKey: ['classKey', token],
+    queryKey: ['gradeKey', token],
     queryFn: () => getData(token),
   })
 }
 
-export const useFetchClass = (token: string) => {
-  return useQuery(classOptions(token))
+export const useFetchGrade = (token: string) => {
+  return useQuery(gradeOptions(token))
 }

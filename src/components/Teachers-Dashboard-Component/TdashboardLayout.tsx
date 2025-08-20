@@ -6,8 +6,8 @@ import useAuth from '@/contexts/AuthContext'
 import { useFetchTeacherDashboard } from '@/hooks/dashboard/useFetchTeacherDashboard'
 
 const TdashboardLayout = () => {
-  const { token } = useAuth()
-  const { data } = useFetchTeacherDashboard(token)
+  const { token, user } = useAuth()
+  const { data } = useFetchTeacherDashboard(user?.id, token)
 
   const subjectList = data?.allSubjects.map((subject) => subject.name).join(', ')
 

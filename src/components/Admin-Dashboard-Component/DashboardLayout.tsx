@@ -2,10 +2,12 @@ import React from 'react'
 import { FiLogOut } from 'react-icons/fi'
 import { useFetchDashboard } from '@/hooks/dashboard/useFetchDashboard'
 import useAuth from '@/contexts/AuthContext'
+import { useNavigate } from 'react-router-dom'
 
 const DashboardLayout = () => {
   const { token } = useAuth()
   const { data } = useFetchDashboard(token)
+  const navigate = useNavigate()
 
   const testLabels = Array.from(
     { length: data?.scoreFormula.numberOfAssessment },
@@ -65,10 +67,20 @@ const DashboardLayout = () => {
       </div>
       {/* Quick Actions */}
       <div className="grid grid-cols-3 gap-4 mb-4">
-        <button className="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600">
+        <button
+          onClick={() => {
+            navigate('/admin/studentmgt/studentReg')
+          }}
+          className="bg-purple-500 text-white py-3 rounded-lg hover:bg-purple-600"
+        >
           Add New Student
         </button>
-        <button className="bg-green-500 text-white py-3 rounded-lg hover:bg-green-600">
+        <button
+          onClick={() => {
+            navigate('/admin/studentmgt')
+          }}
+          className="bg-green-500 text-white py-3 rounded-lg hover:bg-green-600"
+        >
           Promote Student
         </button>
         <button className="bg-red-500 text-white py-3 rounded-lg hover:bg-red-600">

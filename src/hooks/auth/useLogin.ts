@@ -1,6 +1,6 @@
 // src/hooks/useLogin.ts
 import { END_POINT } from '@/config/environment'
-import useAuth from '@/contexts/AuthContext'
+// import useAuth from '@/contexts/AuthContext'
 import { loginProps } from '@/types/auth.interface'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
@@ -14,12 +14,13 @@ const loginUser = async (props: loginProps) => {
 }
 
 export const useLogin = () => {
-  const { login } = useAuth()
+  // const { login } = useAuth()
 
   return useMutation({
     mutationFn: loginUser,
-    onSuccess: (res) => {
-      login(res.data.accessToken, res.data.user)
-    },
+    // onSuccess: (res) => {
+    //   console.log(res)
+    //   login(res.data.accessToken, res.data.user)
+    // },
   })
 }
