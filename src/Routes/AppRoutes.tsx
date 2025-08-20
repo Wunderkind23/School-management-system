@@ -1,26 +1,28 @@
-import { Route, Routes } from "react-router-dom";
-import Layout from "../components/Layout";
-import LoginPage from "../pages/LoginPage";
-import AdminDashboard from "../pages/AdminDashboard";
-import DashboardLayout from "../components/Admin-Dashboard-Component/DashboardLayout";
-import Settings from "../components/Admin-Dashboard-Component/Settings";
-import StudentMgt from "../components/Admin-Dashboard-Component/StudentMgt";
-import StaffMgt from "../components/Admin-Dashboard-Component/StaffMgt";
-import SessionReport from "../components/Admin-Dashboard-Component/SessionReport";
-import StaffReg from "../components/Admin-Dashboard-Component/StaffReg";
-import StudentReg from "../components/Admin-Dashboard-Component/StudentReg";
-import TeachersDashboard from "../pages/TeachersDashboard";
-import TdashboardLayout from "../components/Teachers-Dashboard-Component/TdashboardLayout";
-import ResultEntry from "../components/Teachers-Dashboard-Component/ResultEntry";
-import Result from "../components/Teachers-Dashboard-Component/Result";
-import StudentDashboard from "../pages/StudentDashboard";
-import SdashboardLayout from "../components/Student-Dashboard-Component/SdashboardLayout";
-import OnboardingPage from "../pages/OnboardingPage";
-import FirstPhase2 from "../components/OnboardingComponent/FirstPhase2";
-import SecondPhase1 from "../components/OnboardingComponent/SecondPhase1";
-import SecondPhase2 from "../components/OnboardingComponent/SecondPhase2";
-import SecondPhase3 from "../components/OnboardingComponent/SecondPhase3";
-import SecondPhase4 from "../components/OnboardingComponent/SecondPhase4";
+import { Route, Routes } from 'react-router-dom'
+import Layout from '../components/Layout'
+import LoginPage from '../pages/LoginPage'
+import AdminDashboard from '../pages/AdminDashboard'
+import DashboardLayout from '../components/Admin-Dashboard-Component/DashboardLayout'
+import Settings from '../components/Admin-Dashboard-Component/Settings'
+import StudentMgt from '../components/Admin-Dashboard-Component/StudentMgt'
+import StaffMgt from '../components/Admin-Dashboard-Component/StaffMgt'
+import SessionReport from '../components/Admin-Dashboard-Component/SessionReport'
+import StaffReg from '../components/Admin-Dashboard-Component/StaffReg'
+import StudentReg from '../components/Admin-Dashboard-Component/StudentReg'
+import TeachersDashboard from '../pages/TeachersDashboard'
+import TdashboardLayout from '../components/Teachers-Dashboard-Component/TdashboardLayout'
+import ResultEntry from '../components/Teachers-Dashboard-Component/ResultEntry'
+import Result from '../components/Teachers-Dashboard-Component/Result'
+import StudentDashboard from '../pages/StudentDashboard'
+import SdashboardLayout from '../components/Student-Dashboard-Component/SdashboardLayout'
+import OnboardingPage from '../pages/OnboardingPage'
+import FirstPhase2 from '../components/OnboardingComponent/FirstPhase2'
+import SecondPhase1 from '../components/OnboardingComponent/SecondPhase1'
+import SecondPhase2 from '../components/OnboardingComponent/SecondPhase2'
+import SecondPhase3 from '../components/OnboardingComponent/SecondPhase3'
+import SecondPhase4 from '../components/OnboardingComponent/SecondPhase4'
+import ProtectedRoute from '@/components/ProtectedRoute'
+import ClassSubject from '@/components/Teachers-Dashboard-Component/ClassSubject'
 
 // import OtpModal from "../components/Login-Component/OtpModal";
 
@@ -34,13 +36,20 @@ const AppRoutes = () => {
       <Route path="/secondphase3" element={<SecondPhase3 />} />
       <Route path="/secondphase4" element={<SecondPhase4 />} />
 
-      <Route element={<Layout />}>
-        {/* <Route path="hmme" element={<Home />} /> */}
-      </Route>
+      <Route element={<Layout />}>{/* <Route path="hmme" element={<Home />} /> */}</Route>
 
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
+
       {/* <Route path="/otp" element={<OtpModal />} /> */}
-      <Route path="/admin" element={<AdminDashboard />}>
+
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute roles={['admin']}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/admin/dashboard-layout" element={<DashboardLayout />} />
         <Route path="/admin/staffmgt" element={<StaffMgt />} />
         <Route path="/admin/staffmgt/staffReg" element={<StaffReg />} />
@@ -49,22 +58,26 @@ const AppRoutes = () => {
         <Route path="admin/settings" element={<Settings />} />
         <Route path="admin/session-report" element={<SessionReport />} />
       </Route>
-      <Route path="/Tadmin" element={<TeachersDashboard />}>
-        <Route
-          path="/Tadmin/Tdashboard-layout"
-          element={<TdashboardLayout />}
-        />
+
+      <Route
+        path="/Tadmin"
+        element={
+          <ProtectedRoute roles={['teacher', 'admin']}>
+            <TeachersDashboard />
+          </ProtectedRoute>
+        }
+      >
+        <Route path="/Tadmin/Tdashboard-layout" element={<TdashboardLayout />} />
         <Route path="/Tadmin/result-entry" element={<ResultEntry />} />
         <Route path="/Tadmin/results" element={<Result />} />
+        <Route path="/Tadmin/class-subject" element={<ClassSubject />} />
       </Route>
+
       <Route path="/Sadmin" element={<StudentDashboard />}>
-        <Route
-          path="/Sadmin/Sdashboard-layout"
-          element={<SdashboardLayout />}
-        />
+        <Route path="/Sadmin/Sdashboard-layout" element={<SdashboardLayout />} />
       </Route>
     </Routes>
-  );
-};
+  )
+}
 
-export default AppRoutes;
+export default AppRoutes
