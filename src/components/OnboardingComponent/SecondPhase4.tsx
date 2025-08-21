@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import React from "react";
 
 const SecondPhase4: React.FC = () => {
@@ -19,7 +20,7 @@ const SecondPhase4: React.FC = () => {
         <div className="w-2/3 p-10 flex flex-col items-center">
           {/* Progress Steps */}
           <div className="flex justify-center gap-4 mb-25">
-            {[1, 2, 3, 4].map((num, index) => (
+            {[1, 2, 3, 4].map((num, _index) => (
               <div
                 key={num}
                 className={`h-6 w-6 flex justify-center items-center rounded-full border font-bold 

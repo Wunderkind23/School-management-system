@@ -21,6 +21,8 @@ import SecondPhase1 from "../components/OnboardingComponent/SecondPhase1";
 import SecondPhase2 from "../components/OnboardingComponent/SecondPhase2";
 import SecondPhase3 from "../components/OnboardingComponent/SecondPhase3";
 import SecondPhase4 from "../components/OnboardingComponent/SecondPhase4";
+import ProtectedRoute from "@/components/ProtectedRoute";
+import ClassSubject from "@/components/Teachers-Dashboard-Component/ClassSubject";
 import AcademicReport from "../components/Admin-Dashboard-Component/AcademicReport";
 import FinancialReport from "../components/Admin-Dashboard-Component/FinancialReport";
 import ReportCard from "../components/Admin-Dashboard-Component/ReportCard";
@@ -30,6 +32,7 @@ import ReportCard from "../components/Admin-Dashboard-Component/ReportCard";
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Onboarding routes */}
       <Route path="/firstpage" element={<OnboardingPage />} />
       <Route path="/firstphase2" element={<FirstPhase2 />} />
       <Route path="/secondphase1" element={<SecondPhase1 />} />
@@ -37,13 +40,24 @@ const AppRoutes = () => {
       <Route path="/secondphase3" element={<SecondPhase3 />} />
       <Route path="/secondphase4" element={<SecondPhase4 />} />
 
+      {/* Layout */}
       <Route element={<Layout />}>
         {/* <Route path="hmme" element={<Home />} /> */}
       </Route>
 
-      <Route path="/login" element={<LoginPage />} />
+      {/* Login */}
+      <Route path="/" element={<LoginPage />} />
       {/* <Route path="/otp" element={<OtpModal />} /> */}
-      <Route path="/admin" element={<AdminDashboard />}>
+
+      {/* Admin Routes */}
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute roles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/admin/dashboard-layout" element={<DashboardLayout />} />
         <Route path="/admin/staffmgt" element={<StaffMgt />} />
         <Route path="/admin/staffmgt/staffReg" element={<StaffReg />} />
@@ -56,14 +70,26 @@ const AppRoutes = () => {
           <Route path="financial-report" element={<FinancialReport />} />
         </Route>
       </Route>
-      <Route path="/Tadmin" element={<TeachersDashboard />}>
+
+      {/* Teacher Routes */}
+      <Route
+        path="/Tadmin"
+        element={
+          <ProtectedRoute roles={["teacher", "admin"]}>
+            <TeachersDashboard />
+          </ProtectedRoute>
+        }
+      >
         <Route
           path="/Tadmin/Tdashboard-layout"
           element={<TdashboardLayout />}
         />
         <Route path="/Tadmin/result-entry" element={<ResultEntry />} />
         <Route path="/Tadmin/results" element={<Result />} />
+        <Route path="/Tadmin/class-subject" element={<ClassSubject />} />
       </Route>
+
+      {/* Student Routes */}
       <Route path="/Sadmin" element={<StudentDashboard />}>
         <Route
           path="/Sadmin/Sdashboard-layout"

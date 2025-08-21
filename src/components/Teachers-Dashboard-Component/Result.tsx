@@ -1,34 +1,31 @@
-import { FiLogOut } from "react-icons/fi";
-
-type Student = {
-  studentName: string;
-  Test1: number;
-  Test2: number;
-  Exam: number;
-  Total: number;
-  Grade: string;
-};
-
-const studentList: Student[] = [
-  {
-    studentName: "Paul David",
-    Test1: 10,
-    Test2: 20,
-    Exam: 40,
-    Total: 70,
-    Grade: "B",
-  },
-  {
-    studentName: "Emeka Johnson",
-    Test1: 18,
-    Test2: 12,
-    Exam: 55,
-    Total: 85,
-    Grade: "A",
-  },
-];
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import useAuth from '@/contexts/AuthContext'
+import { useDeleteStudentSubjectScore } from '@/hooks/student-management/useDeleteStudentScore'
+import { useFetchStudentScore } from '@/hooks/student-management/useFetchStudentScore'
+import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
+import { FiLogOut } from 'react-icons/fi'
+import { toast } from 'react-toastify'
 
 const Result = () => {
+  const { token } = useAuth()
+  const { data, refetch } = useFetchStudentScore(token)
+  const { mutate } = useDeleteStudentSubjectScore(token)
+
+  const handleDelete = (id: number) => {
+    mutate(id, {
+      onSuccess: () => {
+        toast.success('Student score deleted successfully.')
+        refetch()
+      },
+      onError: (error: any) => {
+        // If API sends a custom error message
+        console.log(error)
+        const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
+        toast.error(message)
+      },
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans w-full">
       {/* Top Bar */}
@@ -70,30 +67,59 @@ const Result = () => {
           <thead className="border-b border-gray-200">
             <tr>
               <th className="px-4 py-2">Student Name</th>
-              <th className="px-4 py-2">Test 1</th>
-              <th className="px-4 py-2">Test 2</th>
+              <th className="px-4 py-2">Continuos Assessment</th>
               <th className="px-4 py-2">Exam</th>
               <th className="px-4 py-2">Total</th>
               <th className="px-4 py-2">Grade</th>
             </tr>
           </thead>
           <tbody>
-            {studentList.map((staff, index) => (
+            {data?.result?.map((student, index) => (
               <tr key={index} className="border-b border-gray-100">
-                <td className="px-4 py-2">{staff.studentName}</td>
-                <td className="px-4 py-2">{staff.Test1}</td>
-                <td className="px-4 py-2">{staff.Test2}</td>
-                <td className="px-4 py-2">{staff.Exam}</td>
-                <td className="px-4 py-2">{staff.Total}</td>
-                <td className="px-4 py-2">{staff.Grade}</td>
-                <td className="px-4 py-2">⋯</td>
+                <td className="px-4 py-2">
+                  {student?.student?.firstName} {student?.student?.surname}
+                </td>
+                <td className="px-4 py-2">{student.contAssessment}</td>
+                <td className="px-4 py-2">{student.examScore}</td>
+                <td className="px-4 py-2">{student.total}</td>
+                <td className="px-4 py-2">{student.grade}</td>
+
+                <td className="px-4 py-2">
+                  <Popover>
+                    <PopoverTrigger>⋯</PopoverTrigger>
+                    <PopoverContent className="bg-red">
+                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                        <button
+                          onClick={() => {
+                            handleDelete(student.id)
+                          }}
+                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px]"
+                        >
+                          Delete
+                        </button>
+                        <button
+                          onClick={() => {
+                            // handleDeactivateStaff(staff.
+                          }}
+                          className="py-1 px-2 font-bold text-white border rounded-sm bg-green-600 text-[7px] "
+                        >
+                          Generate Report
+                        </button>
+                        {/* // TODO: ASSIGN ROLE TO BE FIXED */}
+                        {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
+                          Assign Role
+                        </button> */}
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Result;
+export default Result

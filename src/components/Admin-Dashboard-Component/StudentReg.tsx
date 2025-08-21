@@ -1,70 +1,105 @@
-import React, { useRef, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import useAuth from '@/contexts/AuthContext'
+import { useFetchClass } from '@/hooks/global/useFetchClass'
+import { useAddStudent } from '@/hooks/student-management/useAddStudent'
+import React, { useRef, useState } from 'react'
+import { toast } from 'react-toastify'
+
+const defaults = {
+  surname: '',
+  firstName: '',
+  middleName: '',
+  dateOfBirth: '',
+  classId: '',
+  gender: '',
+  admissionNumber: '',
+  email: '',
+  guardianName: '',
+  guardianPhone: '',
+  address: '',
+}
 
 const StudentReg = () => {
-  const [formData, setFormData] = useState({
-    lastName: "",
-    firstName: "",
-    middleName: "",
-    dob: "",
-    studentClass: "",
-    gender: "",
-    admissionNumber: "",
-    email: "",
-    guardianName: "",
-    guardianPhone: "",
-    address: "",
-  });
+  const { token } = useAuth()
+  const { data } = useFetchClass(token)
+  const { mutate } = useAddStudent(token)
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [formData, setFormData] = useState(defaults)
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
 
   // File upload click trigger
   const handleClick = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
   // Handle file selection
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   // Handle text/select changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   // Reset form
   const handleReset = () => {
     setFormData({
-      lastName: "",
-      firstName: "",
-      middleName: "",
-      dob: "",
-      studentClass: "",
-      gender: "",
-      admissionNumber: "",
-      email: "",
-      guardianName: "",
-      guardianPhone: "",
-      address: "",
-    });
-    setPreview(null);
-  };
+      surname: '',
+      firstName: '',
+      middleName: '',
+      dateOfBirth: '',
+      classId: '',
+      gender: '',
+      admissionNumber: '',
+      email: '',
+      guardianName: '',
+      guardianPhone: '',
+      address: '',
+    })
+    setPreview(null)
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(formData);
-  };
+    e.preventDefault()
+
+    console.log(formData)
+
+    const convertedData = {
+      ...formData,
+      password: formData.surname,
+      passportUrl: 'url.com',
+      classId: Number(formData.classId),
+      admissionNumber: Number(formData.admissionNumber),
+    }
+
+    mutate(
+      { ...convertedData },
+      {
+        onSuccess: () => {
+          toast.success('Student Added Successfully.')
+          setFormData(defaults)
+        },
+        onError: (error: any) => {
+          // If API sends a custom error message
+          console.log(error)
+          const message =
+            error?.response?.data?.message || 'Something went wrong. Please try again.'
+          toast.error(message)
+        },
+      },
+    )
+  }
 
   return (
     <div className="p-6 bg-pink-50 min-h-screen">
@@ -98,9 +133,9 @@ const StudentReg = () => {
           <div className="col-span-2 space-y-4">
             <input
               type="text"
-              name="lastName"
+              name="surname"
               placeholder="Last Name"
-              value={formData.lastName}
+              value={formData.surname}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
             />
@@ -122,22 +157,22 @@ const StudentReg = () => {
             />
             <input
               type="date"
-              name="dob"
+              name="dateOfBirth"
               placeholder="Date of Birth"
-              value={formData.dob}
+              value={formData.dateOfBirth}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
             />
             <select
-              name="studentClass"
-              value={formData.studentClass}
+              name="classId"
+              value={formData.classId}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
             >
               <option value="">Select Class</option>
-              <option value="Jss 1">Jss 1</option>
-              <option value="Jss 2">Jss 2</option>
-              <option value="Jss 3">Jss 3</option>
+              {data?.map((classRoom) => {
+                return <option value={classRoom.id}>{classRoom.name}</option>
+              })}
             </select>
             <select
               name="gender"
@@ -146,8 +181,8 @@ const StudentReg = () => {
               className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
             >
               <option value="">Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
             </select>
             <input
               type="number"
@@ -214,15 +249,9 @@ const StudentReg = () => {
             className="flex flex-col items-center justify-center border border-gray-300 rounded-lg p-4 h-64 cursor-pointer hover:bg-gray-50"
           >
             {preview ? (
-              <img
-                src={preview}
-                alt="Passport Preview"
-                className="h-full object-cover rounded"
-              />
+              <img src={preview} alt="Passport Preview" className="h-full object-cover rounded" />
             ) : (
-              <span className="text-sm text-gray-500 text-center">
-                Upload Passport Photograph
-              </span>
+              <span className="text-sm text-gray-500 text-center">Upload Passport Photograph</span>
             )}
           </div>
 
@@ -237,7 +266,7 @@ const StudentReg = () => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StudentReg;
+export default StudentReg
