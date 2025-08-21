@@ -23,6 +23,7 @@ import SecondPhase3 from '../components/OnboardingComponent/SecondPhase3'
 import SecondPhase4 from '../components/OnboardingComponent/SecondPhase4'
 import ProtectedRoute from '@/components/ProtectedRoute'
 import ClassSubject from '@/components/Teachers-Dashboard-Component/ClassSubject'
+import AcademicSession from '@/components/Admin-Dashboard-Component/AcademicSesson'
 
 // import OtpModal from "../components/Login-Component/OtpModal";
 
@@ -55,8 +56,9 @@ const AppRoutes = () => {
         <Route path="/admin/staffmgt/staffReg" element={<StaffReg />} />
         <Route path="/admin/studentmgt" element={<StudentMgt />} />
         <Route path="/admin/studentmgt/studentReg" element={<StudentReg />} />
-        <Route path="admin/settings" element={<Settings />} />
-        <Route path="admin/session-report" element={<SessionReport />} />
+        <Route path="/admin/settings" element={<Settings />} />
+        <Route path="/admin/session-report" element={<SessionReport />} />
+        <Route path="/admin/session-management" element={<AcademicSession />} />
       </Route>
 
       <Route

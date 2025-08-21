@@ -67,10 +67,12 @@ const Result = () => {
           <thead className="border-b border-gray-200">
             <tr>
               <th className="px-4 py-2">Student Name</th>
+              <th className="px-4 py-2">Subject</th>
               <th className="px-4 py-2">Continuos Assessment</th>
               <th className="px-4 py-2">Exam</th>
               <th className="px-4 py-2">Total</th>
               <th className="px-4 py-2">Grade</th>
+              <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -79,6 +81,7 @@ const Result = () => {
                 <td className="px-4 py-2">
                   {student?.student?.firstName} {student?.student?.surname}
                 </td>
+                <td className="px-4 py-2">{student.studentId}</td>
                 <td className="px-4 py-2">{student.contAssessment}</td>
                 <td className="px-4 py-2">{student.examScore}</td>
                 <td className="px-4 py-2">{student.total}</td>

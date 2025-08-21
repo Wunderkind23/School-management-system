@@ -82,3 +82,28 @@ export interface ClassSubjectItem {
 export interface ClassSubjectResponse {
   data: ClassSubjectItem[]
 }
+
+export interface SessionAttributesI {
+  id: number
+  name: string
+  isCurrent: boolean
+  numberOfTerms: number
+  terms?: Term[]
+}
+
+export interface SessionResponse {
+  result: SessionAttributesI[]
+  totalCount: number
+}
+
+export interface SessionRequestAttributesI {
+  name: string
+  numberOfTerms: number
+}
+
+export interface TermRequestI {
+  name: string
+  startDate: string
+  endDate: string
+  academicSessionId: number
+}

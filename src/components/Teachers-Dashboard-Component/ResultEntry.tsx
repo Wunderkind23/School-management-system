@@ -272,7 +272,7 @@ const ResultEntry = () => {
           type="submit"
           className=" block mx-auto mt-6 py-2 px-4 rounded-lg bg-purple-500 hover:bg-purple-800 hover:text-white"
         >
-          {isPending ? <FiLoader /> : '   Enter Result'}
+          {isPending ? 'loading' : '   Enter Result'}
         </button>
       </form>
     </div>

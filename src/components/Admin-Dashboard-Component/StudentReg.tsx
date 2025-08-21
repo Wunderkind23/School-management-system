@@ -73,14 +73,12 @@ const StudentReg = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
 
-    console.log(formData)
-
     const convertedData = {
       ...formData,
       password: formData.surname,
       passportUrl: 'url.com',
       classId: Number(formData.classId),
-      admissionNumber: Number(formData.admissionNumber),
+      admissionNumber: Math.floor(Math.random() * 100000),
     }
 
     mutate(
