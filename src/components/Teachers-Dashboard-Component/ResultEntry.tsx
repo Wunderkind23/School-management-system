@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiLoader, FiLogOut } from 'react-icons/fi'
+import { FiLogOut } from 'react-icons/fi'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import useAuth from '@/contexts/AuthContext'
