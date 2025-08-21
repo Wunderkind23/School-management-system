@@ -21,6 +21,9 @@ import SecondPhase1 from "../components/OnboardingComponent/SecondPhase1";
 import SecondPhase2 from "../components/OnboardingComponent/SecondPhase2";
 import SecondPhase3 from "../components/OnboardingComponent/SecondPhase3";
 import SecondPhase4 from "../components/OnboardingComponent/SecondPhase4";
+import AcademicReport from "../components/Admin-Dashboard-Component/AcademicReport";
+import FinancialReport from "../components/Admin-Dashboard-Component/FinancialReport";
+import ReportCard from "../components/Admin-Dashboard-Component/ReportCard";
 
 // import OtpModal from "../components/Login-Component/OtpModal";
 
@@ -47,7 +50,11 @@ const AppRoutes = () => {
         <Route path="/admin/studentmgt" element={<StudentMgt />} />
         <Route path="/admin/studentmgt/studentReg" element={<StudentReg />} />
         <Route path="admin/settings" element={<Settings />} />
-        <Route path="admin/session-report" element={<SessionReport />} />
+        <Route path="admin/session-report" element={<SessionReport />}>
+          <Route path="academic-report" element={<AcademicReport />} />
+          <Route path="report-card" element={<ReportCard />} />
+          <Route path="financial-report" element={<FinancialReport />} />
+        </Route>
       </Route>
       <Route path="/Tadmin" element={<TeachersDashboard />}>
         <Route
