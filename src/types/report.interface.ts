@@ -42,6 +42,7 @@ interface Academic {
 
 export interface StudentReport {
   student: Student
+  className: string
   academics: Academic[]
   sessionInfo: TermAttributeI
   totalSubject: number
