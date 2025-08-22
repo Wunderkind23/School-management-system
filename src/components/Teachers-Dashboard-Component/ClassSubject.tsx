@@ -13,6 +13,7 @@ import { useAddClassSubject } from '@/hooks/staff-management/useAddClassSubject'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { useFetchClassSubject } from '@/hooks/class/useFetchClassSubject'
 import { useDeleteClassSubject } from '@/hooks/class/useDeleteClassSubject'
+import { LoadingButton } from '../custom/Button'
 
 const defaults = {
   subjectId: '',
@@ -28,13 +29,12 @@ const formSchema = z.object({
 
 const ClassSubject = () => {
   const { token } = useAuth()
-  const { data: classData } = useFetchClass(token)
   const { data: subjectData } = useFetchSubject(token)
   const { data: termData } = useFetchTerm(token)
   const { data: classes } = useFetchClass(token)
   const { data: classSubject, refetch } = useFetchClassSubject(token)
 
-  const { mutate } = useAddClassSubject(token)
+  const { mutate, isPending: isPendingCS } = useAddClassSubject(token)
   const { mutate: deleteClass, isPending } = useDeleteClassSubject(token)
 
   const [formData, setFormData] = useState(defaults)
@@ -116,7 +116,7 @@ const ClassSubject = () => {
       </div>
 
       {/* Result */}
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center">
         <div>Enter Class Subject</div>
         <div className="flex gap-4">
           <select
@@ -150,10 +150,10 @@ const ClassSubject = () => {
             })}
           </select>
         </div>
-      </div>
+      </div> */}
 
       {/* Form input */}
-      <form className="p-4">
+      <form className="p-4 mb-7">
         <div className="flex gap-20">
           <Label className="text-xl font-normal" htmlFor="exam">
             Term
@@ -209,19 +209,22 @@ const ClassSubject = () => {
             onChange={handleChange}
             className="w-[50%] border shadow h-[40px] border-gray-300 rounded-lg px-3 py-2 text-sm"
           >
+            <option value="">Select Class</option>
             {classes?.map((classRoom) => {
               return <option value={classRoom.id}>{classRoom.name}</option>
             })}
           </select>
         </div>
 
-        <button
+        <LoadingButton
           onClick={handleSubmit}
+          isLoading={isPendingCS}
           type="submit"
+          loadingText="Adding Class Subjects"
           className=" block mt-6 ml-30 py-2 px-4 rounded-lg bg-purple-500 hover:bg-purple-800 text-white"
         >
           Enter Class Subjects
-        </button>
+        </LoadingButton>
       </form>
 
       {/* Table */}

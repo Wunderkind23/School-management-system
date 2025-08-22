@@ -49,6 +49,10 @@ const Login = () => {
           if (res?.data.user.role === 'teacher') {
             navigate('/Tadmin/Tdashboard-layout')
           }
+
+          if (res?.data.user.role === 'student') {
+            navigate('/Sadmin/Sdashboard-layout')
+          }
         },
         onError: (error: any) => {
           // If API sends custom error message

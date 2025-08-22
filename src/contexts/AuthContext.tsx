@@ -9,6 +9,7 @@ type User = {
   role: string
   profile?: string | null
   profileImageUrl?: string | null
+  classId?: number | null
 }
 
 type AuthContextType = {

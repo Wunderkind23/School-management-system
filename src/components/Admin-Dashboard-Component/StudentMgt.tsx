@@ -1,36 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import useAuth from '@/contexts/AuthContext'
 import { useDeleteStudent } from '@/hooks/student-management/useDeleteStudent'
-import { usePromoteStudent } from '@/hooks/student-management/usePromoteStudent'
 import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { FiLoader } from 'react-icons/fi'
 import { Link } from 'react-router-dom'
+import { PromoteModal } from './modal/PromoteModal'
 import { toast } from 'react-toastify'
+import { useState } from 'react'
 
 const StudentMgt = () => {
   const { token } = useAuth()
   const { data, refetch } = useFetchStudent(token)
-  const { mutate } = usePromoteStudent(token)
   const { mutate: mutateStudent, isPending } = useDeleteStudent(token)
+
+  const [isPromoteOpen, setIsPromoteOpen] = useState(false)
+  const [selectedStudentId, setSelectedStudentId] = useState<number | null>(null)
+
+  const openPromoteModal = (id: number) => {
+    setSelectedStudentId(id)
+    setIsPromoteOpen(true)
+  }
 
   const handleDeleteStudent = (id: number) => {
     mutateStudent(id, {
       onSuccess: () => {
         toast.success('Student Deleted Successfully')
         refetch()
-      },
-      onError: (error: any) => {
-        const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
-        toast.error(message)
-      },
-    })
-  }
-
-  const handlePromoteStudent = (id: number) => {
-    mutate(id, {
-      onSuccess: () => {
-        toast.success('Student Promoted Successfully')
       },
       onError: (error: any) => {
         const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
@@ -103,10 +99,8 @@ const StudentMgt = () => {
                     <PopoverContent className="bg-red">
                       <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
                         <button
-                          onClick={() => {
-                            handlePromoteStudent(student.id)
-                          }}
-                          className="py-1 px-2 font-bold text-white  rounded-sm bg-green-600  text-[7px]"
+                          onClick={() => openPromoteModal(student.id)}
+                          className="py-1 px-2 font-bold text-white rounded-sm bg-green-600 text-[7px]"
                         >
                           Promote
                         </button>
@@ -131,6 +125,9 @@ const StudentMgt = () => {
           </tbody>
         </table>
       </div>
+
+      {/* Promote Modal */}
+      <PromoteModal open={isPromoteOpen} setOpen={setIsPromoteOpen} studentId={selectedStudentId} />
     </div>
   )
 }

@@ -1,6 +1,48 @@
-import { FiLogOut } from "react-icons/fi";
+import useAuth from '@/contexts/AuthContext'
+import { useFetchSingleStudent } from '@/hooks/student-management/useFetchSingleStudent'
+import { FiLogOut } from 'react-icons/fi'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import moment from 'moment'
+import { useFetchAllTerms } from '@/hooks/global/useFetchAllTerms'
 
 const SdashboardLayout = () => {
+  const { token, user } = useAuth()
+  const { data } = useFetchSingleStudent(user?.id, token)
+  const { data: termData, refetch } = useFetchAllTerms(token)
+  const navigate = useNavigate()
+
+  const handleViewResult = () => {
+    refetch()
+
+    const today = moment()
+
+    const currentTerm = termData.find((term) =>
+      today.isBetween(moment(term.startDate), moment(term.endDate)),
+    )
+
+    if (!currentTerm) {
+      toast.error('No active term as of now')
+      return
+    }
+
+    const termId = currentTerm.id
+
+    const { id, classId } = user
+
+    if (!termId) {
+      toast.error('Please select a term')
+      return
+    }
+
+    if (!classId) {
+      toast.error('Please select a classroom')
+      return
+    }
+
+    navigate(`/Sadmin/report-card/${id}?termId=${termId}&classId=${classId}`)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 p-4 font-sans w-full">
       {/* Top Bar */}
@@ -18,23 +60,27 @@ const SdashboardLayout = () => {
       <div className="flex gap-4 items-center">
         <div className="border w-[200px] h-[200px] rounded-md"></div>
         <ul>
-          <li>ABRAHAM JAMES SIM</li>
-          <li>JSS 1B</li>
-          <li>Female</li>
+          <li>
+            {data?.surname} {data?.firstName}
+          </li>
+          <li>{data?.class?.name}</li>
+          <li>{data?.gender}</li>
         </ul>
       </div>
       <div className="flex justify-center gap-10 mt-10">
-        <button className="py-3 px-10 border text-white rounded-md bg-purple-500 hover:bg-purple-800">
-          {" "}
+        <button
+          onClick={handleViewResult}
+          className="py-3 px-10 border text-white rounded-md bg-purple-500 hover:bg-purple-800"
+        >
           View Result
         </button>
         <button className="py-3 px-10 border text-white rounded-md bg-[#1c7402] hover:bg-[#49E21A]">
-          {" "}
+          {' '}
           View Result
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SdashboardLayout;
+export default SdashboardLayout

@@ -15,6 +15,16 @@ export interface TermAttributeI {
   endDate: string // ISO 8601 date string
   createdAt: string // ISO 8601 date string
   updatedAt: string // ISO 8601 date string
+  academicSession?: AcademicSession
+}
+
+export interface AcademicSession {
+  id: number
+  name: string
+  isCurrent: boolean
+  numberOfTerms: number
+  createdAt: string // ISO date string
+  updatedAt: string // ISO date string
 }
 
 export interface GradeAttributeI {
@@ -81,4 +91,29 @@ export interface ClassSubjectItem {
 
 export interface ClassSubjectResponse {
   data: ClassSubjectItem[]
+}
+
+export interface SessionAttributesI {
+  id: number
+  name: string
+  isCurrent: boolean
+  numberOfTerms: number
+  terms?: Term[]
+}
+
+export interface SessionResponse {
+  result: SessionAttributesI[]
+  totalCount: number
+}
+
+export interface SessionRequestAttributesI {
+  name: string
+  numberOfTerms: number
+}
+
+export interface TermRequestI {
+  name: string
+  startDate: string
+  endDate: string
+  academicSessionId: number
 }

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiLoader, FiLogOut } from 'react-icons/fi'
+import { FiLogOut } from 'react-icons/fi'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import useAuth from '@/contexts/AuthContext'
@@ -13,6 +13,7 @@ import { toast } from 'react-toastify'
 import { useAddStudentScore } from '@/hooks/student-management/useAddStudentScore'
 import { StudentScoreAttributeI } from '@/types/student.interface'
 import { useFetchStudentByStaff } from '@/hooks/student-management/userFetchStudentByStaff'
+import { LoadingButton } from '../custom/Button'
 
 const defaults = {
   subjectId: '',
@@ -245,7 +246,7 @@ const ResultEntry = () => {
               {gradesData?.map((grade) => {
                 return (
                   <option key={grade.id} value={grade.grade}>
-                    {grade.grade}
+                    {grade.grade} - ( {grade.lowerRange} - {grade.upperRange} ) 
                   </option>
                 )
               })}
@@ -266,14 +267,15 @@ const ResultEntry = () => {
           </div>
         </div>
 
-        <button
+        <LoadingButton
           disabled={isPending}
+          isLoading={isPending}
           onClick={handleSubmit}
           type="submit"
-          className=" block mx-auto mt-6 py-2 px-4 rounded-lg bg-purple-500 hover:bg-purple-800 hover:text-white"
+          className=" block mx-auto mt-6 py-4 px-7 rounded-lg bg-purple-500 hover:bg-purple-800 hover:text-white"
         >
-          {isPending ? <FiLoader /> : '   Enter Result'}
-        </button>
+          Enter Result
+        </LoadingButton>
       </form>
     </div>
   )

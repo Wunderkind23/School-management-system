@@ -1,3 +1,5 @@
+import { ClassAttributeI } from '.'
+
 export enum GenderEnum {
   Male = 'male',
   Female = 'female',
@@ -36,6 +38,7 @@ export interface StudentResponse {
   passportUrl: string
   createdAt: string // ISO timestamp
   updatedAt: string // ISO timestamp
+  class: ClassAttributeI
 }
 
 export interface StudentApiResponseAttributeI {
@@ -69,4 +72,9 @@ interface StudentScoreResponse {
 export interface StudentScoreResponseAttributeI {
   result: StudentScoreResponse[]
   totalCount: number
+}
+
+export interface PromoteStudentAttributeI {
+  studentId: number
+  classId: number
 }
