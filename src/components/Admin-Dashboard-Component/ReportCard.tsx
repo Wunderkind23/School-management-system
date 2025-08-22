@@ -49,6 +49,10 @@ const ReportCard: React.FC = () => {
         navigate('/Tadmin/result-entry')
       }
 
+      if (user.role === 'student') {
+        navigate('/Sadmin/Sdashboard-layout')
+      }
+
       toast.error(message)
     }
   }, [termId, classId, studentId, isPending])
@@ -100,7 +104,7 @@ const ReportCard: React.FC = () => {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-purple-800 uppercase">
-                  First Term Progress Report
+                  {data?.sessionInfo.name} Progress Report
                 </h1>
                 <p className="text-purple-600 font-medium">Academic Excellence Institute</p>
               </div>

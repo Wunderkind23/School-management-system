@@ -3,12 +3,16 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
 const toggleAcademicSession = async (id: number, token: string) => {
-  const url = `${END_POINT.BASE_URL}/session`
-  const response = await axios.patch(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
+  const url = `${END_POINT.BASE_URL}/session/toggle/${id}`
+  const response = await axios.patch(
+    url,
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-  })
+  )
   return response.data
 }
 

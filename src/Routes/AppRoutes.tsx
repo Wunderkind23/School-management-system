@@ -94,6 +94,7 @@ const AppRoutes = () => {
 
       {/* Student Routes */}
       <Route path="/Sadmin" element={<StudentDashboard />}>
+        <Route path="/Sadmin/report-card/:studentId" element={<ReportCard />} />
         <Route path="/Sadmin/Sdashboard-layout" element={<SdashboardLayout />} />
       </Route>
     </Routes>

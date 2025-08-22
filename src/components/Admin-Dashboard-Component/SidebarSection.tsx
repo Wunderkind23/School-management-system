@@ -3,7 +3,7 @@ import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from 'react-ic
 import { MdOutlineDashboard } from 'react-icons/md'
 import schoollogo from '../../assets/images/schoollogo.png'
 import { BiEdit, BiSolidSchool } from 'react-icons/bi'
-import { IoSettingsOutline } from 'react-icons/io5'
+// import { IoSettingsOutline } from 'react-icons/io5'
 import { HiOutlineChartBar } from 'react-icons/hi'
 import { Link } from 'react-router-dom'
 
@@ -27,7 +27,7 @@ const menu: MenuItem[] = [
     link: '/admin/session-report',
     icon: <HiOutlineChartBar />,
   },
-  { name: 'Settings', link: '/admin/settings', icon: <IoSettingsOutline /> },
+  // { name: 'Settings', link: '/admin/settings', icon: <IoSettingsOutline /> },
 ]
 
 const SidebarSection = () => {

@@ -1,6 +1,6 @@
 import useAuth from '@/contexts/AuthContext'
+import { useFetchAllTerms } from '@/hooks/global/useFetchAllTerms'
 import { useFetchClass } from '@/hooks/global/useFetchClass'
-import { useFetchTerm } from '@/hooks/global/useFetchTerm'
 import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -10,7 +10,7 @@ const AcademicReport: React.FC = () => {
   const { token } = useAuth()
   const { data } = useFetchStudent(token)
   const { data: classData } = useFetchClass(token)
-  const { data: termData } = useFetchTerm(token)
+  const { data: termData } = useFetchAllTerms(token)
 
   const [term, setTerm] = useState('')
   const [classRoom, setClassRoom] = useState('')

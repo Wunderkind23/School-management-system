@@ -187,7 +187,7 @@ const TermForm = () => {
         type="submit"
         className=" block mt-6 ml-30 py-2 px-4 rounded-lg bg-purple-500 hover:bg-purple-800 text-white self-end"
       >
-        {isPending ? 'loading...' : '    Create Session'}
+        {isPending ? 'loading...' : '    Create Term'}
       </button>
     </form>
   )
