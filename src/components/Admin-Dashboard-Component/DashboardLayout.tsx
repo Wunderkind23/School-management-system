@@ -66,16 +66,18 @@ const DashboardLayout = () => {
           </ul>
         </div> */}
 
-        <div className="bg-white shadow rounded-lg p-4 h-full">
-          <h2 className="font-semibold text-lg mb-4">Recent Activities</h2>
-          <ul className="space-y-2 text-sm">
-            {currentActivities.map((activity) => (
-              <li key={activity.id}>✔️ {activity.description}</li>
-            ))}
-          </ul>
+        <div className="bg-white shadow rounded-lg p-4 h-full min-h-[250px] justify-between flex flex-col">
+          <div>
+            <h2 className="font-semibold text-lg mb-4">Recent Activities</h2>
+            <ul className="space-y-2 text-sm">
+              {currentActivities.map((activity) => (
+                <li key={activity.id}>✔️ {activity.description}</li>
+              ))}
+            </ul>
+          </div>
 
           {/* Pagination buttons */}
-          <div className="flex  mt-4 space-x-2">
+          <div className="flex mt-4 space-x-2">
             <button
               onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage === 1}
