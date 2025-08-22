@@ -123,8 +123,8 @@ const DashboardLayout = () => {
             </div>
           </div>
           <div className="flex justify-around mt-4 text-sm">
-            <span>🟣 Female {data?.totalFemaleStudent}</span>
-            <span>🔴 Male {data?.totalMaleStudent}</span>
+            <span>🟣 {data?.totalFemaleStudent} Female</span>
+            <span>🔴 {data?.totalMaleStudent} Males</span>
           </div>
         </div>
       </div>

@@ -81,10 +81,6 @@ const Result = () => {
                 </option>
               )
             })}
-
-            <option>1st</option>
-            <option>2nd</option>
-            <option>3rd</option>
           </select>
 
           <select
@@ -144,7 +140,7 @@ const Result = () => {
                         </button>
                         <button
                           onClick={() => {
-                            goToReport(student.id)
+                            goToReport(student.studentId)
                             // handleDeactivateStaff(staff.
                           }}
                           className="py-1 px-2 font-bold text-white border rounded-sm bg-green-600 text-[7px] "

@@ -5,12 +5,13 @@ import { useFetchSubject } from '@/hooks/global/userFetchSubject'
 import React, { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 import { useAddStaff } from '@/hooks/staff-management/useAddStaff'
+import { LoadingButton } from '../custom/Button'
 
 const StaffReg = () => {
   const { token } = useAuth()
   const { data: subjects } = useFetchSubject(token)
   const { data: classes } = useFetchClass(token)
-  const { mutate } = useAddStaff(token)
+  const { mutate, isPending } = useAddStaff(token)
 
   const defaults = {
     fullName: '',
@@ -86,6 +87,8 @@ const StaffReg = () => {
       toast.error(errors[0])
       return
     }
+
+    console.log(convertedData, 'This is the data')
 
     mutate(
       { ...convertedData },
@@ -181,6 +184,8 @@ const StaffReg = () => {
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded px-3 py-2 text-sm"
               >
+                <option value="">Select Class</option>
+
                 {classes?.map((classRoom) => {
                   return <option value={classRoom.id}>{classRoom.name}</option>
                 })}
@@ -232,12 +237,9 @@ const StaffReg = () => {
                 >
                   Back
                 </button>
-                <button
-                  type="submit"
-                  className="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
-                >
+                <LoadingButton type="submit" isLoading={isPending} loadingText="Adding">
                   Add Staff
-                </button>
+                </LoadingButton>
               </div>
             </div>
 

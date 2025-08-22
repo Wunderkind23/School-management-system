@@ -4,6 +4,8 @@ import { useFetchClass } from '@/hooks/global/useFetchClass'
 import { useAddStudent } from '@/hooks/student-management/useAddStudent'
 import React, { useRef, useState } from 'react'
 import { toast } from 'react-toastify'
+import { LoadingButton } from '../custom/Button'
+import z from 'zod'
 
 const defaults = {
   surname: '',
@@ -19,10 +21,27 @@ const defaults = {
   address: '',
 }
 
+const studentSchema = z.object({
+  surname: z.string().min(1, 'Surname is required'),
+  firstName: z.string().min(1, 'First name is required'),
+  middleName: z.string().optional(),
+  dateOfBirth: z.string().min(1, 'Date of birth is required'),
+  classId: z.string().min(1, 'Class is required'),
+  gender: z.enum(['male', 'female'], { message: 'Gender is required' }),
+  admissionNumber: z.string().optional(),
+  email: z.string().email('Invalid email address').optional(),
+  guardianName: z.string().min(1, 'Guardian name is required'),
+  guardianPhone: z
+    .string()
+    .min(11, 'Guardian phone must be at least 11 digits')
+    .regex(/^[0-9]+$/, 'Phone must only contain numbers'),
+  address: z.string().min(1, 'Address is required'),
+})
+
 const StudentReg = () => {
   const { token } = useAuth()
   const { data } = useFetchClass(token)
-  const { mutate } = useAddStudent(token)
+  const { mutate, isPending } = useAddStudent(token)
 
   const [formData, setFormData] = useState(defaults)
 
@@ -54,24 +73,25 @@ const StudentReg = () => {
 
   // Reset form
   const handleReset = () => {
-    setFormData({
-      surname: '',
-      firstName: '',
-      middleName: '',
-      dateOfBirth: '',
-      classId: '',
-      gender: '',
-      admissionNumber: '',
-      email: '',
-      guardianName: '',
-      guardianPhone: '',
-      address: '',
-    })
+    setFormData(defaults)
     setPreview(null)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+
+    const result = studentSchema.safeParse(formData)
+    if (!result.success) {
+      const errors = result.error.format()
+      // Show first error in toast
+      for (const field in errors) {
+        if (field !== '_errors' && errors[field]?._errors?.length) {
+          toast.error(errors[field]._errors[0])
+          break
+        }
+      }
+      return
+    }
 
     const convertedData = {
       ...formData,
@@ -232,12 +252,10 @@ const StudentReg = () => {
               >
                 Reset form fields
               </button>
-              <button
-                type="submit"
-                className="bg-purple-600 text-white px-4 py-2 rounded text-sm hover:bg-purple-700"
-              >
+
+              <LoadingButton type="submit" isLoading={isPending} loadingText="Adding">
                 Add Student
-              </button>
+              </LoadingButton>
             </div>
           </div>
 

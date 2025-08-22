@@ -1,9 +1,9 @@
 import useAuth from '@/contexts/AuthContext'
 import { useFetchStudentReport } from '@/hooks/student-management/useFetchReport'
 import React, { useEffect } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router-dom'
-import LoadingSection from '../Loading'
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify'
+import ReportCardLoading from './student-report/Loading'
 
 const gradeDescriptions = [
   { grade: 'A1', range: '75-100', description: 'Excellent', color: 'text-green-600' },
@@ -31,7 +31,7 @@ const ReportCard: React.FC = () => {
 
   const query = { studentId, termId, classId }
 
-  const { data, refetch, isPending, error } = useFetchStudentReport(query, token)
+  const { data, isPending, error } = useFetchStudentReport(query, token)
 
   useEffect(() => {
     if (error) {
@@ -64,7 +64,7 @@ const ReportCard: React.FC = () => {
   }
 
   if (isPending) {
-    return <LoadingSection />
+    return <ReportCardLoading />
   }
 
   if (!data) {
