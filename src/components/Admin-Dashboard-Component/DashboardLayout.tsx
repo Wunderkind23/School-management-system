@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
-import { FiLogOut } from 'react-icons/fi'
 import { useFetchDashboard } from '@/hooks/dashboard/useFetchDashboard'
 import useAuth from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import LogoutBtn from '../Logout'
 
 const DashboardLayout = () => {
   const { token } = useAuth()
-  const { data } = useFetchDashboard(token)
+  const { data, isPending } = useFetchDashboard(token)
   const navigate = useNavigate()
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -41,39 +41,40 @@ const DashboardLayout = () => {
           placeholder="Search..."
           className="border rounded-lg px-4 py-2 w-2/3 focus:outline-none "
         />
-        <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
-          <FiLogOut className="mr-2" /> Logout
-        </button>
+        <LogoutBtn />
       </div>
 
       {/* Top Stats */}
-      <div className="grid grid-cols-4 gap-4 mb-4">
-        <StatCard title="Total Number of Students" value={data?.totalStudent} />
-        <StatCard title="Total Number of Teachers" value={data?.totalTeachers} />
-        <StatCard title="Total Number of Bursars" value={data?.totalBursars} />
-        <StatCard title="Pending Results" value={0} />
-      </div>
+      {isPending ? (
+        <div className="grid grid-cols-4 gap-4 mb-4">
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+          <StatCardSkeleton />
+        </div>
+      ) : (
+        <div className="grid grid-cols-4 gap-4 mb-4">
+          <StatCard title="Total Number of Students" value={data?.totalStudent} />
+          <StatCard title="Total Number of Teachers" value={data?.totalTeachers} />
+          <StatCard title="Total Number of Bursars" value={data?.totalBursars} />
+          <StatCard title="Pending Results" value={0} />
+        </div>
+      )}
 
       {/* Middle Section */}
       <div className="grid grid-cols-2 gap-4 mb-6">
-        {/* Recent Activities */}
-        {/* <div className="bg-white shadow rounded-lg p-4 h-full">
-          <h2 className="font-semibold text-lg mb-4">Recent Activities</h2>
-          <ul className="space-y-2 text-sm">
-            {data?.activities.rows.map((activity) => {
-              return <li key={activity.id}>✔️ {activity.description}</li>
-            })}
-          </ul>
-        </div> */}
-
         <div className="bg-white shadow rounded-lg p-4 h-full min-h-[250px] justify-between flex flex-col">
           <div>
             <h2 className="font-semibold text-lg mb-4">Recent Activities</h2>
-            <ul className="space-y-2 text-sm">
-              {currentActivities.map((activity) => (
-                <li key={activity.id}>✔️ {activity.description}</li>
-              ))}
-            </ul>
+            {isPending ? (
+              <ListSkeleton />
+            ) : (
+              <ul className="space-y-2 text-sm">
+                {currentActivities.map((activity) => (
+                  <li key={activity.id}>✔️ {activity.description}</li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Pagination buttons */}
@@ -161,22 +162,30 @@ const DashboardLayout = () => {
         <div>
           <h2 className="font-semibold text-lg mb-5">Grading System</h2>
           <div className="flex justify-between text-sm ">
-            <div className="grid grid-cols-5 justify-between gap-x-10 gap-y-5">
-              {data?.gradingSystem.map((grade) => {
-                return (
-                  <p key={grade.id}>
-                    {grade.grade}: {grade.lowerRange} - {grade.upperRange}
-                  </p>
-                )
-              })}
-            </div>
+            {isPending ? (
+              <GridSkeleton />
+            ) : (
+              <div className="grid grid-cols-5 justify-between gap-x-10 gap-y-5">
+                {data?.gradingSystem.map((grade) => {
+                  return (
+                    <p key={grade.id}>
+                      {grade.grade}: {grade.lowerRange} - {grade.upperRange}
+                    </p>
+                  )
+                })}
+              </div>
+            )}
           </div>
         </div>
 
         <div className=" self-start  items-end flex flex-col">
           <h2 className="font-semibold text-lg mb-4">Total score formula:</h2>
 
-          <p className="mb-3">Total = {testLabels.join(' + ')} + Exam + Total</p>
+          {isPending ? (
+            <div className="mb-3 h-5 w-2/3 bg-gray-200 rounded animate-pulse" />
+          ) : (
+            <p className="mb-3">Total = {testLabels.join(' + ')} + Exam</p>
+          )}
 
           <button className="bg-purple-500 text-white px-4 py-2 rounded-lg mt-2 hover:bg-purple-600">
             Update Formula
@@ -199,4 +208,44 @@ const StatCard: React.FC<StatCardProps> = ({ title, value }) => (
     <p className="text-2xl font-bold">{value}</p>
   </div>
 )
+
+const StatCardSkeleton: React.FC = () => (
+  <div className="bg-white shadow rounded-lg p-4 text-center animate-pulse">
+    <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto mb-2"></div>
+    <div className="h-6 bg-gray-300 rounded w-1/3 mx-auto"></div>
+  </div>
+)
+
+interface ListSkeletonProps {
+  count?: number // how many list items to show
+}
+
+const ListSkeleton: React.FC<ListSkeletonProps> = ({ count = 5 }) => {
+  return (
+    <ul className="space-y-2 text-sm animate-pulse">
+      {Array.from({ length: count }).map((_, i) => (
+        <li key={i} className="flex items-center space-x-2">
+          <div className="h-3 w-3 rounded-full bg-gray-300"></div>
+          <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+interface GridSkeletonProps {
+  columns?: number
+  count?: number
+}
+
+const GridSkeleton: React.FC<GridSkeletonProps> = ({ columns = 5, count = 10 }) => {
+  return (
+    <div className={`grid grid-cols-${columns} justify-between gap-x-10 gap-y-5 animate-pulse`}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div key={i} className="h-5 w-20 bg-gray-200 rounded"></div>
+      ))}
+    </div>
+  )
+}
+
 export default DashboardLayout

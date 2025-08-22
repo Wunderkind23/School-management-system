@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiLogOut } from 'react-icons/fi'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import useAuth from '@/contexts/AuthContext'
@@ -14,6 +13,7 @@ import { useAddStudentScore } from '@/hooks/student-management/useAddStudentScor
 import { StudentScoreAttributeI } from '@/types/student.interface'
 import { useFetchStudentByStaff } from '@/hooks/student-management/userFetchStudentByStaff'
 import { LoadingButton } from '../custom/Button'
+import LogoutBtn from '../Logout'
 
 const defaults = {
   subjectId: '',
@@ -112,9 +112,7 @@ const ResultEntry = () => {
           placeholder="Search..."
           className="border rounded-lg px-4 py-2 w-2/3 focus:outline-none "
         />
-        <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
-          <FiLogOut className="mr-2" /> Logout
-        </button>
+        <LogoutBtn />
       </div>
 
       {/* Result */}
@@ -246,7 +244,7 @@ const ResultEntry = () => {
               {gradesData?.map((grade) => {
                 return (
                   <option key={grade.id} value={grade.grade}>
-                    {grade.grade} - ( {grade.lowerRange} - {grade.upperRange} ) 
+                    {grade.grade} - ( {grade.lowerRange} - {grade.upperRange} )
                   </option>
                 )
               })}

@@ -1,8 +1,8 @@
-import { FiLogOut } from "react-icons/fi";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from 'react-router-dom'
+import LogoutBtn from '../Logout'
 
 const SessionReport = () => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 font-sans w-full">
@@ -13,9 +13,8 @@ const SessionReport = () => {
           placeholder="Search..."
           className="border rounded-lg px-4 py-2 w-2/3 focus:outline-none shadow-sm"
         />
-        <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition">
-          <FiLogOut className="mr-2" /> Logout
-        </button>
+
+        <LogoutBtn />
       </div>
 
       {/* Navigation */}
@@ -23,9 +22,9 @@ const SessionReport = () => {
         <Link
           to="academic-report"
           className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition ${
-            location.pathname.includes("academic-reports")
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            location.pathname.includes('academic-reports')
+              ? 'bg-purple-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
           Academic Reports
@@ -33,9 +32,9 @@ const SessionReport = () => {
         <Link
           to="financial-report"
           className={`px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition ${
-            location.pathname.includes("financial-reports")
-              ? "bg-purple-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+            location.pathname.includes('financial-reports')
+              ? 'bg-purple-600 text-white'
+              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
           Financial Reports
@@ -45,7 +44,7 @@ const SessionReport = () => {
       {/* Dynamic Content */}
       <Outlet />
     </div>
-  );
-};
+  )
+}
 
-export default SessionReport;
+export default SessionReport

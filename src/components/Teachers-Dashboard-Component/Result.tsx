@@ -6,13 +6,14 @@ import { useDeleteStudentSubjectScore } from '@/hooks/student-management/useDele
 import { useFetchStudentScore } from '@/hooks/student-management/useFetchStudentScore'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { useState } from 'react'
-import { FiLogOut } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import LogoutBtn from '../Logout'
+import TableSkeleton from '../TableLoading'
 
 const Result = () => {
   const { token } = useAuth()
-  const { data, refetch } = useFetchStudentScore(token)
+  const { data, refetch, isPending } = useFetchStudentScore(token)
   const { mutate } = useDeleteStudentSubjectScore(token)
 
   const { data: classData } = useFetchClass(token)
@@ -61,9 +62,7 @@ const Result = () => {
           placeholder="Search..."
           className="border rounded-lg px-4 py-2 w-2/3 focus:outline-none "
         />
-        <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
-          <FiLogOut className="mr-2" /> Logout
-        </button>
+        <LogoutBtn />
       </div>
 
       <div className="flex justify-between items-center">
@@ -113,51 +112,56 @@ const Result = () => {
               <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.result?.map((student, index) => (
-              <tr key={index} className="border-b border-gray-100">
-                <td className="px-4 py-2">
-                  {student?.student?.firstName} {student?.student?.surname}
-                </td>
-                <td className="px-4 py-2">{student.studentId}</td>
-                <td className="px-4 py-2">{student.contAssessment}</td>
-                <td className="px-4 py-2">{student.examScore}</td>
-                <td className="px-4 py-2">{student.total}</td>
-                <td className="px-4 py-2">{student.grade}</td>
 
-                <td className="px-4 py-2">
-                  <Popover>
-                    <PopoverTrigger>⋯</PopoverTrigger>
-                    <PopoverContent className="bg-red">
-                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
-                        <button
-                          onClick={() => {
-                            handleDelete(student.id)
-                          }}
-                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px]"
-                        >
-                          Delete
-                        </button>
-                        <button
-                          onClick={() => {
-                            goToReport(student.studentId)
-                            // handleDeactivateStaff(staff.
-                          }}
-                          className="py-1 px-2 font-bold text-white border rounded-sm bg-green-600 text-[7px] "
-                        >
-                          Generate Report
-                        </button>
-                        {/* // TODO: ASSIGN ROLE TO BE FIXED */}
-                        {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
+          {isPending ? (
+            <TableSkeleton rows={7} cols={7} />
+          ) : (
+            <tbody>
+              {data?.result?.map((student, index) => (
+                <tr key={index} className="border-b border-gray-100">
+                  <td className="px-4 py-2">
+                    {student?.student?.firstName} {student?.student?.surname}
+                  </td>
+                  <td className="px-4 py-2">{student.studentId}</td>
+                  <td className="px-4 py-2">{student.contAssessment}</td>
+                  <td className="px-4 py-2">{student.examScore}</td>
+                  <td className="px-4 py-2">{student.total}</td>
+                  <td className="px-4 py-2">{student.grade}</td>
+
+                  <td className="px-4 py-2">
+                    <Popover>
+                      <PopoverTrigger>⋯</PopoverTrigger>
+                      <PopoverContent className="bg-red">
+                        <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                          <button
+                            onClick={() => {
+                              handleDelete(student.id)
+                            }}
+                            className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px]"
+                          >
+                            Delete
+                          </button>
+                          <button
+                            onClick={() => {
+                              goToReport(student.studentId)
+                              // handleDeactivateStaff(staff.
+                            }}
+                            className="py-1 px-2 font-bold text-white border rounded-sm bg-green-600 text-[7px] "
+                          >
+                            Generate Report
+                          </button>
+                          {/* // TODO: ASSIGN ROLE TO BE FIXED */}
+                          {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
                           Assign Role
                         </button> */}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>

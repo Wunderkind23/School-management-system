@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FiLogOut, FiLoader } from 'react-icons/fi'
+import { FiLoader } from 'react-icons/fi'
 import { Label } from '../ui/label'
 import useAuth from '@/contexts/AuthContext'
 import { useState } from 'react'
@@ -14,6 +14,8 @@ import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover
 import { useFetchClassSubject } from '@/hooks/class/useFetchClassSubject'
 import { useDeleteClassSubject } from '@/hooks/class/useDeleteClassSubject'
 import { LoadingButton } from '../custom/Button'
+import LogoutBtn from '../Logout'
+import TableSkeleton from '../TableLoading'
 
 const defaults = {
   subjectId: '',
@@ -110,9 +112,7 @@ const ClassSubject = () => {
           placeholder="Search..."
           className="border rounded-lg px-4 py-2 w-2/3 focus:outline-none "
         />
-        <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600">
-          <FiLogOut className="mr-2" /> Logout
-        </button>
+        <LogoutBtn />
       </div>
 
       {/* Result */}
@@ -238,37 +238,41 @@ const ClassSubject = () => {
               <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {classSubject?.map((subject, index) => (
-              <tr
-                key={index}
-                // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
-              >
-                <td className="px-4 py-2">{subject?.subject?.name}</td>
-                <td className="px-4 py-2">{subject?.term?.name}</td>
-                <td className="px-4 py-2">{subject?.class?.name}</td>
-                {/* <td className="px-4 py-2">{staff.employeeNumber}</td> */}
-                <td className="px-4 py-2">
-                  <Popover>
-                    <PopoverTrigger>⋯</PopoverTrigger>
-                    <PopoverContent className="bg-red">
-                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
-                        <button
-                          disabled={isPending}
-                          onClick={() => {
-                            handleDelete(subject.id)
-                          }}
-                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
-                        >
-                          {isPending ? <FiLoader /> : 'Delete'}
-                        </button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+          {isPending ? (
+            <TableSkeleton cols={4} rows={4} />
+          ) : (
+            <tbody>
+              {classSubject?.map((subject, index) => (
+                <tr
+                  key={index}
+                  // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
+                >
+                  <td className="px-4 py-2">{subject?.subject?.name}</td>
+                  <td className="px-4 py-2">{subject?.term?.name}</td>
+                  <td className="px-4 py-2">{subject?.class?.name}</td>
+                  {/* <td className="px-4 py-2">{staff.employeeNumber}</td> */}
+                  <td className="px-4 py-2">
+                    <Popover>
+                      <PopoverTrigger>⋯</PopoverTrigger>
+                      <PopoverContent className="bg-red">
+                        <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                          <button
+                            disabled={isPending}
+                            onClick={() => {
+                              handleDelete(subject.id)
+                            }}
+                            className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
+                          >
+                            {isPending ? <FiLoader /> : 'Delete'}
+                          </button>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>

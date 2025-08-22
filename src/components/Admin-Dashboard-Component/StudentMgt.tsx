@@ -8,10 +8,12 @@ import { Link } from 'react-router-dom'
 import { PromoteModal } from './modal/PromoteModal'
 import { toast } from 'react-toastify'
 import { useState } from 'react'
+import LogoutBtn from '../Logout'
+import TableSkeleton from '../TableLoading'
 
 const StudentMgt = () => {
   const { token } = useAuth()
-  const { data, refetch } = useFetchStudent(token)
+  const { data, refetch, isPending: isPendingStudent } = useFetchStudent(token)
   const { mutate: mutateStudent, isPending } = useDeleteStudent(token)
 
   const [isPromoteOpen, setIsPromoteOpen] = useState(false)
@@ -48,14 +50,7 @@ const StudentMgt = () => {
           <span className="absolute  right-4 text-gray-400 text-xs">🔍</span>
         </div>
         <div className="flex items-center gap-4">
-          <img
-            src="https://via.placeholder.com/30"
-            alt="Profile"
-            className="w-8 h-8 rounded-full"
-          />
-          <button className="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700 text-sm">
-            Logout
-          </button>
+          <LogoutBtn />
         </div>
       </div>
 
@@ -80,49 +75,54 @@ const StudentMgt = () => {
               <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.result?.map((student, index) => (
-              <tr
-                key={index}
-                className={`${student ? 'bg-white' : 'bg-red-100'}`}
-                // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
-              >
-                <td className="px-4 py-2">
-                  {student.surname} {student.firstName}
-                </td>
-                <td className="px-4 py-2">{student.gender}</td>
-                {/* <td className="px-4 py-2">{student.email}</td> */}
-                {/* <td className="px-4 py-2">{student.employeeNumber}</td> */}
-                <td className="px-4 py-2">
-                  <Popover>
-                    <PopoverTrigger>⋯</PopoverTrigger>
-                    <PopoverContent className="bg-red">
-                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
-                        <button
-                          onClick={() => openPromoteModal(student.id)}
-                          className="py-1 px-2 font-bold text-white rounded-sm bg-green-600 text-[7px]"
-                        >
-                          Promote
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeleteStudent(student.id)
-                          }}
-                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
-                        >
-                          {isPending ? <FiLoader /> : 'Delete'}
-                        </button>
-                        {/* // TODO: ASSIGN ROLE TO BE FIXED */}
-                        {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
+
+          {isPendingStudent ? (
+            <TableSkeleton />
+          ) : (
+            <tbody>
+              {data?.result?.map((student, index) => (
+                <tr
+                  key={index}
+                  className={`${student ? 'bg-white' : 'bg-red-100'}`}
+                  // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
+                >
+                  <td className="px-4 py-2">
+                    {student.surname} {student.firstName}
+                  </td>
+                  <td className="px-4 py-2">{student.gender}</td>
+                  {/* <td className="px-4 py-2">{student.email}</td> */}
+                  {/* <td className="px-4 py-2">{student.employeeNumber}</td> */}
+                  <td className="px-4 py-2">
+                    <Popover>
+                      <PopoverTrigger>⋯</PopoverTrigger>
+                      <PopoverContent className="bg-red">
+                        <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                          <button
+                            onClick={() => openPromoteModal(student.id)}
+                            className="py-1 px-2 font-bold text-white rounded-sm bg-green-600 text-[7px]"
+                          >
+                            Promote
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleDeleteStudent(student.id)
+                            }}
+                            className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
+                          >
+                            {isPending ? <FiLoader /> : 'Delete'}
+                          </button>
+                          {/* // TODO: ASSIGN ROLE TO BE FIXED */}
+                          {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
                           Assign Role
                         </button> */}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
 

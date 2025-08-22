@@ -9,6 +9,7 @@ import { useLogin } from '@/hooks/auth/useLogin'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import useAuth from '@/contexts/AuthContext'
+import { LoadingButton } from '../custom/Button'
 
 const Login = () => {
   const { mutate, isPending } = useLogin()
@@ -66,14 +67,6 @@ const Login = () => {
   }
 
   const handleContinue = () => {
-    // if (!forgotEmail.trim()) {
-    //   alert("Please enter a valid email.");
-    //   return;
-    // }
-
-    // // Navigate to OTP screen and pass email as route state
-    // navigate("/otp", { state: { forgotEmail } });
-
     // do validation, API call, etc.
     setShowOtpModal(true) // 👈 this displays the OTP modal
     setShowForgotModal(false) // optionally hide forgot modal
@@ -153,7 +146,7 @@ const Login = () => {
 
         {/* Forgot Password */}
         <span
-          onClick={() => setShowForgotModal(true)}
+          // onClick={() => setShowForgotModal(true)}
           className="text-sm text-blue-500 block mt-2 cursor-pointer hover:underline"
         >
           Forgot password?
@@ -161,13 +154,14 @@ const Login = () => {
 
         {/* Submit Button */}
         <div className="flex justify-center mt-6">
-          <button
-            disabled={isPending}
+          <LoadingButton
+            isLoading={isPending}
             type="submit"
+            loadingText="logging in"
             className="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition"
           >
-            {isPending ? 'Loading...' : 'Login'}
-          </button>
+            Login
+          </LoadingButton>
         </div>
       </form>
 

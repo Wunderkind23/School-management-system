@@ -5,10 +5,11 @@ import { useFetchStudent } from '@/hooks/student-management/userFetchStudent'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import TableSkeleton from '../TableLoading'
 
 const AcademicReport: React.FC = () => {
   const { token } = useAuth()
-  const { data } = useFetchStudent(token)
+  const { data, isPending } = useFetchStudent(token)
   const { data: classData } = useFetchClass(token)
   const { data: termData } = useFetchAllTerms(token)
 
@@ -75,31 +76,36 @@ const AcademicReport: React.FC = () => {
               <th className="py-3 px-4 border-b text-center">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.result.map((student, index) => (
-              <tr
-                key={index}
-                className={`text-sm ${
-                  index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
-                } hover:bg-purple-50`}
-              >
-                <td className="py-3 px-4 border-b">
-                  {student.firstName} {student.surname}
-                </td>
-                <td className="py-3 px-4 border-b">{student.gender}</td>
-                <td className="py-3 px-4 border-b text-center">
-                  <button
-                    onClick={() => {
-                      goToReport(student.id)
-                    }}
-                    className="px-3 py-1 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-xs"
-                  >
-                    View
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+
+          {isPending ? (
+            <TableSkeleton />
+          ) : (
+            <tbody>
+              {data?.result.map((student, index) => (
+                <tr
+                  key={index}
+                  className={`text-sm ${
+                    index % 2 === 0 ? 'bg-gray-50' : 'bg-white'
+                  } hover:bg-purple-50`}
+                >
+                  <td className="py-3 px-4 border-b">
+                    {student.firstName} {student.surname}
+                  </td>
+                  <td className="py-3 px-4 border-b">{student.gender}</td>
+                  <td className="py-3 px-4 border-b text-center">
+                    <button
+                      onClick={() => {
+                        goToReport(student.id)
+                      }}
+                      className="px-3 py-1 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition text-xs"
+                    >
+                      View
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>

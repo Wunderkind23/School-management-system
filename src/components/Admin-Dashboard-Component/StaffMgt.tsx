@@ -5,13 +5,13 @@ import { useFetchStaff } from '@/hooks/staff-management/userFetchStaff'
 import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import LogoutBtn from '../Logout'
+import TableSkeleton from '../TableLoading'
 
 const StaffMgt = () => {
   const { token } = useAuth()
-  const { data, refetch } = useFetchStaff(token)
+  const { data, refetch, isPending } = useFetchStaff(token)
   const { mutate } = useDeactivateStaff(token)
-
-  // const handleStaffNavigate = (id: string) => {}
 
   const handleDeactivateStaff = (id: number) => {
     mutate(id, {
@@ -39,14 +39,7 @@ const StaffMgt = () => {
           <span className="absolute  right-4 text-gray-400 text-xs">🔍</span>
         </div>
         <div className="flex items-center gap-4">
-          <img
-            src="https://via.placeholder.com/30"
-            alt="Profile"
-            className="w-8 h-8 rounded-full"
-          />
-          <button className="bg-purple-600 text-white px-4 py-1 rounded hover:bg-purple-700 text-sm">
-            Logout
-          </button>
+          <LogoutBtn />
         </div>
       </div>
 
@@ -71,44 +64,49 @@ const StaffMgt = () => {
               <th className="px-4 py-2">Action</th>
             </tr>
           </thead>
-          <tbody>
-            {data?.result?.map((staff, index) => (
-              <tr
-                key={index}
-                className={`${staff.isActive ? 'bg-white' : 'bg-red-100'}`}
-                // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
-              >
-                <td className="px-4 py-2">{staff.fullName}</td>
-                <td className="px-4 py-2">{staff.role}</td>
-                <td className="px-4 py-2">{staff.email}</td>
-                {/* <td className="px-4 py-2">{staff.employeeNumber}</td> */}
-                <td className="px-4 py-2">
-                  <Popover>
-                    <PopoverTrigger>⋯</PopoverTrigger>
-                    <PopoverContent className="bg-red">
-                      <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
-                        <button className="py-1 px-2 font-bold text-black border rounded-sm border-[#9D0E9E] text-[7px]">
-                          View
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleDeactivateStaff(staff.id)
-                          }}
-                          className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
-                        >
-                          Deactivate
-                        </button>
-                        {/* // TODO: ASSIGN ROLE TO BE FIXED */}
-                        {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
+
+          {isPending ? (
+            <TableSkeleton rows={4} cols={4} />
+          ) : (
+            <tbody>
+              {data?.result?.map((staff, index) => (
+                <tr
+                  key={index}
+                  className={`${staff.isActive ? 'bg-white' : 'bg-red-100'}`}
+                  // className={`border ${staff.isActive ? ' border-white' : 'border border-red-500'}`}
+                >
+                  <td className="px-4 py-2">{staff.fullName}</td>
+                  <td className="px-4 py-2">{staff.role}</td>
+                  <td className="px-4 py-2">{staff.email}</td>
+                  {/* <td className="px-4 py-2">{staff.employeeNumber}</td> */}
+                  <td className="px-4 py-2">
+                    <Popover>
+                      <PopoverTrigger>⋯</PopoverTrigger>
+                      <PopoverContent className="bg-red">
+                        <div className="gap-2 bg-white p-2 flex shadow-sm rounded-sm">
+                          <button className="py-1 px-2 font-bold text-black border rounded-sm border-[#9D0E9E] text-[7px]">
+                            View
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleDeactivateStaff(staff.id)
+                            }}
+                            className="py-1 px-2 font-bold text-white border rounded-sm bg-red-600 text-[7px] "
+                          >
+                            Deactivate
+                          </button>
+                          {/* // TODO: ASSIGN ROLE TO BE FIXED */}
+                          {/* <button className="py-3 px-3 font-bold text-black border rounded-lg border-[#9D0E9E]">
                           Assign Role
                         </button> */}
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                        </div>
+                      </PopoverContent>
+                    </Popover>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
         </table>
       </div>
     </div>
