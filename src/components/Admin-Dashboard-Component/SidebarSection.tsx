@@ -29,8 +29,11 @@ const menu: MenuItem[] = [
   },
   { name: 'Settings', link: 'admin/settings', icon: <IoSettingsOutline /> },
 ]
+  { name: 'Settings', link: 'admin/settings', icon: <IoSettingsOutline /> },
+]
 
 const SidebarSection = () => {
+  const [open, setOpen] = useState(true)
   const [open, setOpen] = useState(true)
 
   return (
@@ -39,15 +42,18 @@ const SidebarSection = () => {
       <div
         className={`${
           open ? 'w-72' : 'w-20'
+          open ? 'w-72' : 'w-20'
         } border h-full duration-300 transition-all relative px-4 py-6`}
       >
         {/* Toggle Button */}
         <div
           className={`absolute top-6 -right-4 w-8 h-8 bg-zinc-50 border-2 border-zinc-50 rounded-full flex items-center justify-center cursor-pointer ${
             !open && 'rotate-180'
+            !open && 'rotate-180'
           } transition-transform duration-300`}
           onClick={() => setOpen(!open)}
         >
+          {open ? <TbLayoutSidebarLeftExpand /> : <TbLayoutSidebarLeftCollapse />}
           {open ? <TbLayoutSidebarLeftExpand /> : <TbLayoutSidebarLeftCollapse />}
         </div>
 
@@ -56,6 +62,7 @@ const SidebarSection = () => {
           <img
             src={schoollogo}
             alt="school logo"
+            className={`transition-all duration-300 object-contain ${open ? 'w-55' : 'w-10'}`}
             className={`transition-all duration-300 object-contain ${open ? 'w-55' : 'w-10'}`}
           />
         </div>
@@ -71,6 +78,7 @@ const SidebarSection = () => {
               >
                 <div className="text-2xl">{item.icon}</div>
                 {open && <span className="text-base font-medium">{item.name}</span>}
+                {open && <span className="text-base font-medium">{item.name}</span>}
               </div>
             </Link>
           ))}
@@ -79,5 +87,8 @@ const SidebarSection = () => {
     </div>
   )
 }
+  )
+}
 
+export default SidebarSection
 export default SidebarSection
