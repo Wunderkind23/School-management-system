@@ -70,3 +70,8 @@ export interface StudentScoreResponseAttributeI {
   result: StudentScoreResponse[]
   totalCount: number
 }
+
+export interface PromoteStudentAttributeI {
+  studentId: number
+  classId: number
+}

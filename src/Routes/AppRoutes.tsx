@@ -63,10 +63,12 @@ const AppRoutes = () => {
         <Route path="/admin/studentmgt" element={<StudentMgt />} />
         <Route path="/admin/studentmgt/studentReg" element={<StudentReg />} />
         <Route path="/admin/settings" element={<Settings />} />
+        <Route path="/admin/session-management" element={<AcademicSession />} />
+
         <Route path="/admin/session-report" element={<SessionReport />}>
           <Route path="/admin/session-report/academic-report" element={<AcademicReport />} />
           <Route
-            path="/admin/session-report/academic-report/report-card"
+            path="/admin/session-report/academic-report/report-card/:studentId"
             element={<ReportCard />}
           />
           <Route path="/admin/session-report/financial-report" element={<FinancialReport />} />
@@ -86,6 +88,8 @@ const AppRoutes = () => {
         <Route path="/Tadmin/result-entry" element={<ResultEntry />} />
         <Route path="/Tadmin/results" element={<Result />} />
         <Route path="/Tadmin/class-subject" element={<ClassSubject />} />
+        <Route path="/Tadmin/class-subject" element={<ClassSubject />} />
+        <Route path="/Tadmin/results/report-card/:studentId" element={<ReportCard />} />
       </Route>
 
       {/* Student Routes */}
