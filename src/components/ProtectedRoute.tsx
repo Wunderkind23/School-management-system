@@ -13,11 +13,11 @@ export default function ProtectedRoute({
 }) {
   const { isAuthenticated, user } = useAuth()
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return <Navigate to="/" replace />
   }
 
-  if (!roles.includes(user.role)) {
+  if (!roles.includes(user?.role)) {
     return <Navigate to="/" replace />
   }
 

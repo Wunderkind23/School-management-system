@@ -3,7 +3,6 @@ import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 
 const deleteStudentScore = async (id: number, token: string) => {
-  console.log(id, 'This is the student id')
   const url = `${END_POINT.BASE_URL}/student/score/${id}`
 
   const response = await axios.delete(url, {

@@ -33,7 +33,6 @@ const OtpModal: React.FC<OtpModalProps> = ({ forgotEmail, onsuccess }) => {
         </div>
         <button
           onClick={() => {
-            console.log("OTP submitted:", otpCode);
             onsuccess(); // show reset password modal
           }}
           className="w-[60%] mx-auto py-2 bg-purple-600 text-white rounded hover:bg-purple-700 transition"

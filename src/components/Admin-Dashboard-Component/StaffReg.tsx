@@ -88,7 +88,6 @@ const StaffReg = () => {
       return
     }
 
-    console.log(convertedData, 'This is the data')
 
     mutate(
       { ...convertedData },
@@ -99,7 +98,6 @@ const StaffReg = () => {
         },
         onError: (error: any) => {
           // If API sends a custom error message
-          console.log(error)
           const message =
             error?.response?.data?.message || 'Something went wrong. Please try again.'
           toast.error(message)
@@ -187,7 +185,7 @@ const StaffReg = () => {
                 <option value="">Select Class</option>
 
                 {classes?.map((classRoom) => {
-                  return <option value={classRoom.id}>{classRoom.name}</option>
+                  return <option key={classRoom.id} value={classRoom.id}>{classRoom.name}</option>
                 })}
               </select>
 

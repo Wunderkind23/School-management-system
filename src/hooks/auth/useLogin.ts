@@ -7,9 +7,7 @@ import axios from 'axios'
 
 const loginUser = async (props: loginProps) => {
   const url = `${END_POINT.BASE_URL}/auth/login`
-  console.log(END_POINT.BASE_URL)
   const response = await axios.post(url, props)
-  console.log(response.data)
   return response.data
 }
 

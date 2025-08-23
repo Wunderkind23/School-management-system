@@ -5,7 +5,6 @@ import axios from 'axios'
 
 const addStaff = async (props: StaffCreationAttributeI, token: string) => {
   const url = `${END_POINT.BASE_URL}/auth/staff-registration`
-  console.log(END_POINT.BASE_URL)
   const response = await axios.post(url, props, {
     headers: {
       Authorization: `Bearer ${token}`,

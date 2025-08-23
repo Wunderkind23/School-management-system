@@ -12,7 +12,6 @@ const SdashboardLayout = () => {
   const navigate = useNavigate()
 
   const handleViewResult = () => {
-    console.log(score)
 
     if (!score) {
       toast.error('No result was found for you, contact your teacher')

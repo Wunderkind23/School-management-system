@@ -76,7 +76,6 @@ const ClassSubject = () => {
         },
         onError: (error: any) => {
           // If API sends a custom error message
-          console.log(error)
           const message =
             error?.response?.data?.message || 'Something went wrong. Please try again.'
           toast.error(message)
@@ -93,7 +92,6 @@ const ClassSubject = () => {
       },
       onError: (error: any) => {
         // If API sends a custom error message
-        console.log(error)
         const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
         toast.error(message)
       },
@@ -211,7 +209,7 @@ const ClassSubject = () => {
           >
             <option value="">Select Class</option>
             {classes?.map((classRoom) => {
-              return <option value={classRoom.id}>{classRoom.name}</option>
+              return <option key={classRoom.id} value={classRoom.id}>{classRoom.name}</option>
             })}
           </select>
         </div>

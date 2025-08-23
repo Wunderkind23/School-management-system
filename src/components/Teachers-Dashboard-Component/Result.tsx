@@ -46,7 +46,6 @@ const Result = () => {
       },
       onError: (error: any) => {
         // If API sends a custom error message
-        console.log(error)
         const message = error?.response?.data?.message || 'Something went wrong. Please try again.'
         toast.error(message)
       },

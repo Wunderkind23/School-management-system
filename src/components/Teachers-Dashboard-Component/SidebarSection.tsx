@@ -59,7 +59,7 @@ const SidebarSection = () => {
 
         <nav className="flex flex-col gap-4">
           {menu.map((item, index) => (
-            <Link to={item.link}>
+            <Link key={index} to={item.link}>
               <div
                 key={index}
                 className="flex items-center gap-4 cursor-pointer hover:bg-purple-600 hover:text-white p-2 rounded-md transition-all"
