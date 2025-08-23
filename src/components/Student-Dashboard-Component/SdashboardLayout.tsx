@@ -1,46 +1,25 @@
 import useAuth from '@/contexts/AuthContext'
 import { useFetchSingleStudent } from '@/hooks/student-management/useFetchSingleStudent'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
-import moment from 'moment'
-import { useFetchAllTerms } from '@/hooks/global/useFetchAllTerms'
 import LogoutBtn from '../Logout'
+import { useFetchStudentScoreLatest } from '@/hooks/student-management/useFetchStudentScoreLatest'
+import { toast } from 'react-toastify'
 
 const SdashboardLayout = () => {
   const { token, user } = useAuth()
   const { data } = useFetchSingleStudent(user?.id, token)
-  const { data: termData, refetch } = useFetchAllTerms(token)
+  const { data: score } = useFetchStudentScoreLatest(user?.id, token)
   const navigate = useNavigate()
 
   const handleViewResult = () => {
-    refetch()
+    console.log(score)
 
-    const today = moment()
-
-    const currentTerm = termData.find((term) =>
-      today.isBetween(moment(term.startDate), moment(term.endDate)),
-    )
-
-    if (!currentTerm) {
-      toast.error('No active term as of now')
+    if (!score) {
+      toast.error('No result was found for you, contact your teacher')
       return
     }
 
-    const termId = currentTerm.id
-
-    const { id, classId } = user
-
-    if (!termId) {
-      toast.error('Please select a term')
-      return
-    }
-
-    if (!classId) {
-      toast.error('Please select a classroom')
-      return
-    }
-
-    navigate(`/Sadmin/report-card/${id}?termId=${termId}&classId=${classId}`)
+    navigate(`/Sadmin/report-card/${user?.id}?termId=${score?.termId}&classId=${score?.classId}`)
   }
 
   return (
@@ -56,7 +35,13 @@ const SdashboardLayout = () => {
       </div>
 
       <div className="flex gap-4 items-center">
-        <div className="border w-[200px] h-[200px] rounded-md"></div>
+        <div className="shadow w-[200px] h-[200px] rounded-md overflow-hidden">
+          <img
+            className="w-full h-full"
+            src="https://img.freepik.com/premium-vector/student-icon_159242-32825.jpg?semt=ais_hybrid&w=740&q=80"
+            alt=""
+          />
+        </div>
         <ul>
           <li>
             {data?.surname} {data?.firstName}

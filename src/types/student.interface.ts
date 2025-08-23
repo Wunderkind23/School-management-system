@@ -56,7 +56,7 @@ export interface StudentScoreAttributeI {
   total: number
 }
 
-interface StudentScoreResponse {
+export interface StudentScoreResponse {
   id: number
   subjectId: number
   studentId: number

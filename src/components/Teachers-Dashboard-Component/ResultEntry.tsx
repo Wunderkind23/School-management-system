@@ -22,13 +22,14 @@ const defaults = {
   contAssessment: '',
   examScore: '',
   grade: '',
-  total: 0,
+  total: '',
 }
 
 const formSchema = z
   .object({
     subjectId: z.string().min(1, 'Subject is required').transform(Number),
     studentId: z.string().min(1, 'Student is required').transform(Number),
+    // classId: z.string().min(1, 'Class is required').transform(Number),
     termId: z.string().min(1, 'Term is required').transform(Number),
     contAssessment: z.string().min(1, 'Continuous Assessment score is required').transform(Number),
     examScore: z.string().min(1, 'Exam Score is required').transform(Number),
@@ -94,7 +95,6 @@ const ResultEntry = () => {
         },
         onError: (error: any) => {
           // If API sends a custom error message
-          console.log(error)
           const message =
             error?.response?.data?.message || 'Something went wrong. Please try again.'
           toast.error(message)
@@ -257,6 +257,7 @@ const ResultEntry = () => {
             </Label>
             <Input
               name="total"
+              value={formData.total}
               className=" h-[40px] shadow w-[30%] border border-gray-200"
               id="exam"
               type="number"
