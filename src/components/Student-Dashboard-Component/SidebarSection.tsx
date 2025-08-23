@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { TbLayoutSidebarLeftCollapse, TbLayoutSidebarLeftExpand } from 'react-icons/tb'
 import { MdOutlineDashboard } from 'react-icons/md'
-import schoollogo from '../../assets/images/schoollogo.png'
+import school from '../../assets/images/school.png'
 // import { IoSettingsOutline } from 'react-icons/io5'
 // import { HiOutlineChartBar } from "react-icons/hi";
 import { Link } from 'react-router-dom'
@@ -45,7 +45,7 @@ const SidebarSection = () => {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <img
-            src={schoollogo}
+            src={school}
             alt="school logo"
             className={`transition-all duration-300 object-contain ${open ? 'w-55' : 'w-10'}`}
           />
